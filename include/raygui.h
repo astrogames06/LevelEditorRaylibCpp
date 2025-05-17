@@ -1985,6 +1985,50 @@ int GuiButton(Rectangle bounds, const char *text)
     return result;      // Button pressed: result = 1
 }
 
+// Rounded button control, returns true when clicked
+int GuiButtonRounded(Rectangle bounds, const char *text, float roundness, int segments)
+{
+    int result = 0;
+    GuiState state = guiState;
+
+    // Update control
+    //--------------------------------------------------------------------
+    if ((state != STATE_DISABLED) && !guiLocked && !guiControlExclusiveMode)
+    {
+        Vector2 mousePoint = GetMousePosition();
+
+        // Check button state
+        if (CheckCollisionPointRec(mousePoint, bounds))
+        {
+            if (IsMouseButtonDown(MOUSE_LEFT_BUTTON)) state = STATE_PRESSED;
+            else state = STATE_FOCUSED;
+
+            if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON)) result = 1;
+        }
+    }
+    //--------------------------------------------------------------------
+
+    // Draw control
+    //--------------------------------------------------------------------
+    // Draw rounded rectangle for the button
+    Color borderColor = GetColor(GuiGetStyle(BUTTON, BORDER + (state*3)));
+    Color baseColor = GetColor(GuiGetStyle(BUTTON, BASE + (state*3)));
+    Color textColor = GetColor(GuiGetStyle(BUTTON, TEXT + (state*3)));
+
+    // Draw the button's rounded border and base color
+    DrawRectangleRounded(bounds, roundness, segments, baseColor);
+    DrawRectangleRoundedLines(bounds, roundness, segments, GuiGetStyle(BUTTON, BORDER_WIDTH), borderColor);
+
+    // Draw button text
+    GuiDrawText(text, GetTextBounds(BUTTON, bounds), GuiGetStyle(BUTTON, TEXT_ALIGNMENT), textColor);
+
+    if (state == STATE_FOCUSED) GuiTooltip(bounds);
+    //------------------------------------------------------------------
+
+    return result;      // Button pressed: result = 1
+}
+
+
 // Label button control
 int GuiLabelButton(Rectangle bounds, const char *text)
 {

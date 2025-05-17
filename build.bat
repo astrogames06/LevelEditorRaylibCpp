@@ -1,2 +1,2 @@
-g++ src/main.cpp src/Game/Game.cpp src/Entity/Entity.cpp src/Player/Player.cpp -o game.exe -O1 -Wall -std=c++17 -Wno-missing-braces -I include/ lib/libraylib.win.a -lopengl32 -lgdi32 -lwinmm
+g++ src/main.cpp src/Game/Game.cpp src/Entity/Entity.cpp src/Player/Player.cpp src/UI/UI.cpp -o game.exe -O1 -Wall -std=c++17 -Wno-missing-braces -I include/ lib/libraylib.win.a -lopengl32 -lgdi32 -lwinmm
 .\game.exe

@@ -7,6 +7,14 @@
 #include <string>
 
 #include "../Entity/Entity.hpp"
+#include "../Player/Player.hpp"
+
+enum EDIT_MODE
+{
+    MOVE,
+    BLOCK,
+    ERASE
+};
 
 class Game
 {
@@ -15,6 +23,10 @@ public:
     const int HEIGHT = 455;
     const std::string TITLE = "Level Builder!";
     bool running = false;
+
+    Camera2D camera;
+
+    EDIT_MODE mode = BLOCK;
 
     Vector2 world_mouse_pos;
     float CELL_SIZE = 35.f;
@@ -26,6 +38,10 @@ public:
     void Init();
     void Update();
     void Draw();
+
+    void Reset();
+
+    Player* GetPlayer();
 };
 
 #endif

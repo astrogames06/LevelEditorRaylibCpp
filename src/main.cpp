@@ -45,11 +45,5 @@ int main(void)
 void UpdateDrawFrame()
 {
 	game.Update();
-	BeginDrawing();
-	
-	ClearBackground(RAYWHITE);
-
 	game.Draw();
-
-	EndDrawing();
 }
