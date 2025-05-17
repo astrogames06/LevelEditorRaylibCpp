@@ -1,6 +1,7 @@
 #include "Game.hpp"
 
 #include <iostream>
+#include <algorithm>
 
 #include "../UI/UI.hpp"
 
@@ -32,11 +33,37 @@ void Game::Init()
 
 void Game::Update()
 {
-    //std::cout << (mode == MOVE) << '\n';
-    if (IsKeyPressed(KEY_E)) running = !running;
     if (!running)
     {
-        world_mouse_pos = GetMousePosition();
+        world_mouse_pos = GetScreenToWorld2D(GetMousePosition(), camera);
+
+        if ((IsKeyPressed(KEY_W) || IsKeyDown(KEY_UP)))
+        {
+            camera.target.y -= CELL_SIZE;
+            std::for_each(cells.begin(), cells.end(), [this](Rectangle& cell) {
+                cell.y -= CELL_SIZE;
+            });
+        }
+        if ((IsKeyPressed(KEY_A) || IsKeyDown(KEY_LEFT)))
+        {
+            camera.target.x -= CELL_SIZE;
+            std::for_each(cells.begin(), cells.end(), [this](Rectangle& cell) {
+                cell.x -= CELL_SIZE;
+            });
+        }
+        if ((IsKeyPressed(KEY_S) || IsKeyDown(KEY_DOWN))) {
+            camera.target.y += CELL_SIZE;
+            std::for_each(cells.begin(), cells.end(), [this](Rectangle& cell) {
+                cell.y += CELL_SIZE;
+            });
+        }
+        if ((IsKeyPressed(KEY_D) || IsKeyDown(KEY_RIGHT)))
+        {
+            camera.target.x += CELL_SIZE;
+            std::for_each(cells.begin(), cells.end(), [this](Rectangle& cell) {
+                cell.x += CELL_SIZE;
+            });
+        }
 
         for (Rectangle& cell : cells)
         {
@@ -121,6 +148,15 @@ void Game::Reset()
     GetPlayer()->rec.y = GetPlayer()->origin_pos.y;
     GetPlayer()->x = GetPlayer()->origin_pos.x;
     GetPlayer()->y = GetPlayer()->origin_pos.y;
+
+    cells.clear();
+    for (int x = 0; x < WIDTH/CELL_SIZE; x++)
+    {
+        for (int y = 0; y < HEIGHT/CELL_SIZE; y++)
+        {
+            cells.push_back({x*CELL_SIZE, y*CELL_SIZE, CELL_SIZE, CELL_SIZE});
+        }
+    }
 
     camera = { 0 };
     camera.rotation = 0.0f;
