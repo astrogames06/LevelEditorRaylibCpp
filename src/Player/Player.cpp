@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "../Game/Game.hpp"
+#include "../Block/Block.hpp"
 
 extern Game game;
 
@@ -10,8 +11,6 @@ void Player::Init()
 {
     rec = {origin_pos.x, origin_pos.y, game.CELL_SIZE, game.CELL_SIZE};
 }
-
-bool selected = false;
 
 void Player::Update()
 {
@@ -21,27 +20,6 @@ void Player::Update()
     if (game.mode == MOVE)
     {
         std::cout << "x : " << game.world_mouse_pos.x << ", y : " << game.world_mouse_pos.y << '\n';
-
-        if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && CheckCollisionPointRec(GetMousePosition(), rec))
-        {
-            rec.x = GetMouseX();
-            rec.y = GetMouseY();
-            selected = true;
-        }
-
-        if (selected)
-        {
-            rec.x = game.world_mouse_pos.x;
-            rec.y = game.world_mouse_pos.y;
-        }
-
-        if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT) && selected)
-        {
-            origin_pos = game.world_mouse_pos;
-            rec.x = game.world_mouse_pos.x;
-            rec.y = game.world_mouse_pos.y;
-            selected = false;
-        }
     }
 
     // Player collision and movement ! AI GENERATED !
@@ -60,10 +38,10 @@ void Player::Update()
 
         x += velocity.x * dt;
         rec.x = (float)x;
-        for (const Rectangle& block : game.blocks) {
-            if (CheckCollisionRecs(rec, block)) {
-                if (velocity.x > 0) x = block.x - rec.width;
-                else if (velocity.x < 0) x = block.x + block.width;
+        for (const Block* block : game.GetEntitiesOfType<Block>()) {
+            if (CheckCollisionRecs(rec, block->rec)) {
+                if (velocity.x > 0) x = block->rec.x - rec.width;
+                else if (velocity.x < 0) x = block->rec.x + block->rec.width;
                 velocity.x = 0;
                 rec.x = (float)x;
             }
@@ -71,17 +49,16 @@ void Player::Update()
 
         y += velocity.y * dt;
         rec.y = (float)y;
-
         isOnGround = false;
-        for (const Rectangle& block : game.blocks) {
-            if (CheckCollisionRecs(rec, block)) {
+        for (const Block* block : game.GetEntitiesOfType<Block>()) {
+            if (CheckCollisionRecs(rec, block->rec)) {
                 if (velocity.y > 0) {
-                    y = block.y - rec.height;
+                    y = block->rec.y - rec.height;
                     velocity.y = 0;
                     isOnGround = true;
                 }
                 else if (velocity.y < 0) {
-                    y = block.y + block.height;
+                    y = block->rec.y + block->rec.height;
                     velocity.y = 0;
                 }
                 rec.y = (float)y;

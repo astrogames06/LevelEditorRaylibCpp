@@ -5,6 +5,8 @@
 
 #include "../UI/UI.hpp"
 
+#include "../Block/Block.hpp"
+
 void Game::Init()
 {
     std::unique_ptr<Player> player = std::make_unique<Player>();
@@ -19,7 +21,7 @@ void Game::Init()
 
     for (int x = 0; x < WIDTH/CELL_SIZE; x++)
     {
-        blocks.push_back({ x * CELL_SIZE, HEIGHT - CELL_SIZE, CELL_SIZE, CELL_SIZE });
+        entities.push_back(std::make_unique<Block>(x * CELL_SIZE, HEIGHT - CELL_SIZE));
     }
 
     for (int x = 0; x < WIDTH/CELL_SIZE; x++)
@@ -70,16 +72,51 @@ void Game::Update()
             if (CheckCollisionPointRec(world_mouse_pos, cell)) world_mouse_pos = {cell.x, cell.y};
         }
 
-        int block_index = -1;
-        bool block_there = false;
-        for (int i = 0; i < blocks.size(); i++)
+        Entity* block_to_remove = nullptr;
+        for (int i = 0; i < GetEntitiesOfType<Block>().size(); i++)
         {
-            Rectangle& block = blocks[i];
-            if (CheckCollisionPointRec(world_mouse_pos, block))
+            if (CheckCollisionPointRec(world_mouse_pos, GetEntitiesOfType<Block>()[i]->rec))
             {
-                block_there = true;
-                block_index = i;
+                block_to_remove = GetEntitiesOfType<Block>()[i];
                 break;
+            }
+        }
+
+        if (game.mode == MOVE)
+        {
+            for (std::unique_ptr<Entity>& entity : entities)
+            {
+                Rectangle rect = {(float)entity->x, (float)entity->y, CELL_SIZE, CELL_SIZE};
+
+                if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && CheckCollisionPointRec(world_mouse_pos, rect))
+                {
+                    selected_entity = entity.get();
+                    dragging = true;
+                }
+            }
+
+            if (selected_entity != nullptr)
+            {
+                selected_entity->x = world_mouse_pos.x;
+                selected_entity->y = world_mouse_pos.y;
+
+                if (Block* block = dynamic_cast<Block*>(selected_entity))
+                {
+                    block->rec.x = world_mouse_pos.x;
+                    block->rec.y = world_mouse_pos.y;
+                }
+                else if (Player* plr = dynamic_cast<Player*>(selected_entity))
+                {
+                    plr->origin_pos = world_mouse_pos;
+                    plr->rec.x = world_mouse_pos.x;
+                    plr->rec.y = world_mouse_pos.y;
+                }
+            }
+
+            if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT) && dragging)
+            {
+                dragging = false;
+                selected_entity = nullptr;
             }
         }
 
@@ -87,20 +124,23 @@ void Game::Update()
         {
             if (mode == BLOCK)
             {
-                if (!block_there)
+                if (block_to_remove == nullptr)
                 {
-                    blocks.push_back({world_mouse_pos.x, world_mouse_pos.y, CELL_SIZE, CELL_SIZE});
+                    entities.push_back(std::make_unique<Block>(world_mouse_pos.x, world_mouse_pos.y));
                 }
                 else
                 {
-                    blocks.erase(blocks.begin() + block_index);
+                    entities.erase(std::remove_if(entities.begin(), entities.end(),
+                    [block_to_remove](const std::unique_ptr<Entity>& ptr) {
+                        return ptr.get() == block_to_remove;
+                    }), entities.end());
                 }
             }
         }
     }
     if (running)
     {
-        camera.target = {(float)GetPlayer()->x, (float)GetPlayer()->y};
+        camera.target = {(float)GetEntityOfType<Player>()->x, (float)GetEntityOfType<Player>()->y};
         camera.offset = { WIDTH / 2.0f, HEIGHT / 2.0f };
     }
     for (std::unique_ptr<Entity>& entity : entities)
@@ -114,11 +154,6 @@ void Game::Draw()
     BeginDrawing();
     ClearBackground(WHITE);
     BeginMode2D(camera);
-
-    for (Rectangle& block : blocks)
-    {
-        DrawRectangleRec(block, RED);
-    }
 
     for (std::unique_ptr<Entity>& entity : entities)
     {
@@ -144,10 +179,10 @@ void Game::Reset()
 {
     running = false;
 
-    GetPlayer()->rec.x = GetPlayer()->origin_pos.x;
-    GetPlayer()->rec.y = GetPlayer()->origin_pos.y;
-    GetPlayer()->x = GetPlayer()->origin_pos.x;
-    GetPlayer()->y = GetPlayer()->origin_pos.y;
+    GetEntityOfType<Player>()->rec.x = GetEntityOfType<Player>()->origin_pos.x;
+    GetEntityOfType<Player>()->rec.y = GetEntityOfType<Player>()->origin_pos.y;
+    GetEntityOfType<Player>()->x = GetEntityOfType<Player>()->origin_pos.x;
+    GetEntityOfType<Player>()->y = GetEntityOfType<Player>()->origin_pos.y;
 
     cells.clear();
     for (int x = 0; x < WIDTH/CELL_SIZE; x++)
@@ -161,15 +196,4 @@ void Game::Reset()
     camera = { 0 };
     camera.rotation = 0.0f;
     camera.zoom = 1.0f;
-}
-
-Player* Game::GetPlayer()
-{
-    for (auto& entity : entities)
-    {
-        Player* player = dynamic_cast<Player*>(entity.get());
-        if (player != nullptr)
-            return player;
-    }
-    return nullptr; // not found
 }

@@ -33,15 +33,45 @@ public:
     std::vector<Rectangle> cells;
     
     std::vector<std::unique_ptr<Entity>> entities;
-    std::vector<Rectangle> blocks;
+    template <typename T>
+    T* GetEntityOfType();
+
+    template <typename T>
+    std::vector<T*> GetEntitiesOfType();
+
+    Entity* selected_entity = nullptr;
+    bool dragging = false;
 
     void Init();
     void Update();
     void Draw();
 
     void Reset();
-
-    Player* GetPlayer();
 };
+
+template <typename T>
+T* Game::GetEntityOfType()
+{
+    for (auto& entity : entities)
+    {
+        T* result = dynamic_cast<T*>(entity.get());
+        if (result != nullptr)
+            return result;
+    }
+    return nullptr;
+}
+
+template <typename T>
+std::vector<T*> Game::GetEntitiesOfType()
+{
+    std::vector<T*> results;
+    for (auto& entity : entities)
+    {
+        T* result = dynamic_cast<T*>(entity.get());
+        if (result != nullptr)
+            results.push_back(result);
+    }
+    return results;
+}
 
 #endif
