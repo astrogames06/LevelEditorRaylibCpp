@@ -119,10 +119,10 @@ void Game::Reset()
 {
     running = false;
 
-    GetEntityOfType<Player>()->rec.x = GetEntityOfType<Player>()->origin_pos.x;
-    GetEntityOfType<Player>()->rec.y = GetEntityOfType<Player>()->origin_pos.y;
-    GetEntityOfType<Player>()->x = GetEntityOfType<Player>()->origin_pos.x;
-    GetEntityOfType<Player>()->y = GetEntityOfType<Player>()->origin_pos.y;
+    for (std::unique_ptr<Entity>& entity : entities)
+    {
+        entity->Reset();
+    }
 
     cells.clear();
     for (int x = 0; x < WIDTH/CELL_SIZE; x++)

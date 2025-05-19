@@ -81,3 +81,11 @@ void Player::Draw()
 {
     DrawRectangleRec(rec, BLUE);
 }
+
+void Player::Reset()
+{
+    rec.x = origin_pos.x;
+    rec.y = origin_pos.y;
+    x = origin_pos.x;
+    y = origin_pos.y;
+}

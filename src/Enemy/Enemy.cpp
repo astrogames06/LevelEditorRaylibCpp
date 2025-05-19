@@ -30,7 +30,10 @@ void Enemy::Update()
 
         // LEFT AND RIGHT
         if (isOnGround)
-            velocity.x = direction ? moveSpeed : -moveSpeed; 
+            velocity.x = direction ? moveSpeed : -moveSpeed;
+        else
+            velocity.x = direction ? (moveSpeed/5) : -(moveSpeed/5);
+        
         x += velocity.x * dt;
         for (const Block* block : game.GetEntitiesOfType<Block>()) {
             if (CheckCollisionRecs({(float)x, (float)y, game.CELL_SIZE, game.CELL_SIZE}, block->rec)) {
@@ -45,18 +48,25 @@ void Enemy::Update()
 
         // TOP AND BOTTOM
         y += velocity.y * dt;
-        isOnGround = false;
         for (const Block* block : game.GetEntitiesOfType<Block>()) {
             if (CheckCollisionRecs({(float)x, (float)y, game.CELL_SIZE, game.CELL_SIZE}, block->rec)) {
                 if (velocity.y > 0) {
                     y = block->rec.y - game.CELL_SIZE;
                     velocity.y = 0;
-                    isOnGround = true;
                 }
                 else if (velocity.y < 0) {
                     y = block->rec.y + block->rec.height;
                     velocity.y = 0;
                 }
+            }
+        }
+
+        isOnGround = false;
+        Rectangle groundCheck = { (float)x, (float)y + game.CELL_SIZE + 1, game.CELL_SIZE, 2 };
+        for (const Block* block : game.GetEntitiesOfType<Block>()) {
+            if (CheckCollisionRecs(groundCheck, block->rec)) {
+                isOnGround = true;
+                break;
             }
         }
 
@@ -75,4 +85,12 @@ void Enemy::Update()
 void Enemy::Draw()
 {
     DrawTexture(texture, x, y, WHITE);
+}
+
+void Enemy::Reset()
+{
+    isOnGround = false;
+    x = origin_pos.x;
+    y = origin_pos.y;
+    velocity = {0, 0};
 }

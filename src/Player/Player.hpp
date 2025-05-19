@@ -15,6 +15,7 @@ public:
     void Init() override;
     void Update() override;
     void Draw() override;
+    void Reset() override;
 };
 
 #endif
