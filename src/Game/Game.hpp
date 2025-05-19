@@ -25,6 +25,7 @@ public:
     bool running = false;
 
     Camera2D camera;
+    std::vector<Rectangle> UI_recs;
 
     EDIT_MODE mode = BLOCK;
 

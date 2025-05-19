@@ -9,7 +9,7 @@ INCLUDE_DIR="include/"
 LIB_DIR="lib/"
 
 # Files
-CODE_FILES="src/main.cpp src/Game/Game.cpp src/Entity/Entity.cpp src/Player/Player.cpp src/UI/UI.cpp"
+CODE_FILES=$(find src/ -name "*.cpp")
 
 # Build command
 $CC $CODE_FILES $LIB_DIR/libraylib.mac.a -o app $CFLAGS -I $INCLUDE_DIR -L $LIB_DIR -lraylib.mac -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo

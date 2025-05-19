@@ -4,8 +4,8 @@
 #include <algorithm>
 
 #include "../UI/UI.hpp"
-
 #include "../Block/Block.hpp"
+#include "../Systems/WorldEditor.hpp"
 
 void Game::Init()
 {
@@ -72,71 +72,8 @@ void Game::Update()
             if (CheckCollisionPointRec(world_mouse_pos, cell)) world_mouse_pos = {cell.x, cell.y};
         }
 
-        Entity* block_to_remove = nullptr;
-        for (int i = 0; i < GetEntitiesOfType<Block>().size(); i++)
-        {
-            if (CheckCollisionPointRec(world_mouse_pos, GetEntitiesOfType<Block>()[i]->rec))
-            {
-                block_to_remove = GetEntitiesOfType<Block>()[i];
-                break;
-            }
-        }
-
-        if (game.mode == MOVE)
-        {
-            for (std::unique_ptr<Entity>& entity : entities)
-            {
-                Rectangle rect = {(float)entity->x, (float)entity->y, CELL_SIZE, CELL_SIZE};
-
-                if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && CheckCollisionPointRec(world_mouse_pos, rect))
-                {
-                    selected_entity = entity.get();
-                    dragging = true;
-                }
-            }
-
-            if (selected_entity != nullptr)
-            {
-                selected_entity->x = world_mouse_pos.x;
-                selected_entity->y = world_mouse_pos.y;
-
-                if (Block* block = dynamic_cast<Block*>(selected_entity))
-                {
-                    block->rec.x = world_mouse_pos.x;
-                    block->rec.y = world_mouse_pos.y;
-                }
-                else if (Player* plr = dynamic_cast<Player*>(selected_entity))
-                {
-                    plr->origin_pos = world_mouse_pos;
-                    plr->rec.x = world_mouse_pos.x;
-                    plr->rec.y = world_mouse_pos.y;
-                }
-            }
-
-            if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT) && dragging)
-            {
-                dragging = false;
-                selected_entity = nullptr;
-            }
-        }
-
-        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
-        {
-            if (mode == BLOCK)
-            {
-                if (block_to_remove == nullptr)
-                {
-                    entities.push_back(std::make_unique<Block>(world_mouse_pos.x, world_mouse_pos.y));
-                }
-                else
-                {
-                    entities.erase(std::remove_if(entities.begin(), entities.end(),
-                    [block_to_remove](const std::unique_ptr<Entity>& ptr) {
-                        return ptr.get() == block_to_remove;
-                    }), entities.end());
-                }
-            }
-        }
+        // VERY IMPORTANT FOR PLACING ENTITIES SYSTEMS
+        RunWorldEditorSystem();
     }
     if (running)
     {
