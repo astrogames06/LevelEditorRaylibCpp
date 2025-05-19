@@ -3,6 +3,7 @@
 
 void BlockSystem();
 void MoveSystem();
+void EnemySystem();
 
 void RunWorldEditorSystem();
 

@@ -6,6 +6,7 @@
 #include "../UI/UI.hpp"
 #include "../Block/Block.hpp"
 #include "../Systems/WorldEditor.hpp"
+#include "../Enemy/Enemy.hpp"
 
 void Game::Init()
 {
@@ -88,7 +89,8 @@ void Game::Update()
 
 void Game::Draw()
 {
-    std::cout << IsOverUI() << '\n';
+    std::cout << mode << '\n';
+    std::cout << GetEntitiesOfType<Enemy>().size() << '\n';
     BeginDrawing();
     ClearBackground(WHITE);
     BeginMode2D(camera);

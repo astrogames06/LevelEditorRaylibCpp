@@ -8,7 +8,7 @@ class Entity
 public:
     int x;
     int y;
-    Texture2D tex;
+    Texture2D texture;
 
     virtual ~Entity() = default;
     virtual void Init() {}

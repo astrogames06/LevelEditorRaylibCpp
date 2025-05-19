@@ -27,6 +27,11 @@ void DrawUI()
         {
             game.mode = MOVE;
         }
+
+        if (GuiButtonRounded({120, 10, 45, 45}, "#152#", 5.f, 5.f, game.UI_recs))
+        {
+            game.mode = ENEMY;
+        }
     }
 
     if (game.running)

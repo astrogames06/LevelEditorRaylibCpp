@@ -19,7 +19,7 @@ void Player::Update()
     // Moving player in MOVE mode
     if (game.mode == MOVE)
     {
-        std::cout << "x : " << game.world_mouse_pos.x << ", y : " << game.world_mouse_pos.y << '\n';
+        //std::cout << "x : " << game.world_mouse_pos.x << ", y : " << game.world_mouse_pos.y << '\n';
     }
 
     // Player collision and movement ! AI GENERATED !

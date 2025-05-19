@@ -3,6 +3,7 @@
 #include "../Game/Game.hpp"
 #include "../UI/UI.hpp"
 #include "../Block/Block.hpp"
+#include "../Enemy/Enemy.hpp"
 
 extern Game game;
 
@@ -62,12 +63,36 @@ void MoveSystem()
             plr->rec.x = game.world_mouse_pos.x;
             plr->rec.y = game.world_mouse_pos.y;
         }
+        else if (Enemy* enemy = dynamic_cast<Enemy*>(game.selected_entity))
+        {
+            enemy->origin_pos = game.world_mouse_pos;
+            enemy->x = game.world_mouse_pos.x;
+            enemy->y = game.world_mouse_pos.y;
+        }
     }
 
     if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT) && game.dragging)
     {
         game.dragging = false;
         game.selected_entity = nullptr;
+    }
+}
+
+void EnemySystem()
+{
+    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && !IsOverUI())
+    {
+        // if (block_to_remove == nullptr)
+        // {
+        game.entities.push_back(std::make_unique<Enemy>(game.world_mouse_pos.x, game.world_mouse_pos.y));
+        // }
+        // else
+        // {
+        //     game.entities.erase(std::remove_if(game.entities.begin(), game.entities.end(),
+        //     [block_to_remove](const std::unique_ptr<Entity>& ptr) {
+        //         return ptr.get() == block_to_remove;
+        //     }), game.entities.end());
+        // }
     }
 }
 
@@ -80,6 +105,9 @@ void RunWorldEditorSystem()
         break;
     case MOVE:
         MoveSystem();
+        break;
+    case ENEMY:
+        EnemySystem();
         break;
     default:
         break;

@@ -13,7 +13,7 @@ enum EDIT_MODE
 {
     MOVE,
     BLOCK,
-    ERASE
+    ENEMY
 };
 
 class Game
