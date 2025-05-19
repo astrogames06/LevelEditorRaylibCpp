@@ -88,6 +88,7 @@ void Game::Update()
 
 void Game::Draw()
 {
+    std::cout << IsOverUI() << '\n';
     BeginDrawing();
     ClearBackground(WHITE);
     BeginMode2D(camera);

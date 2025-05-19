@@ -38,3 +38,12 @@ void DrawUI()
         }
     }
 }
+bool IsOverUI()
+{
+    for (Rectangle& r : game.UI_recs)
+    {
+        if (CheckCollisionPointRec(GetMousePosition(), r))
+            return true;
+    }
+    return false;
+}

@@ -1,7 +1,7 @@
 #include "WorldEditor.hpp"
 
 #include "../Game/Game.hpp"
-
+#include "../UI/UI.hpp"
 #include "../Block/Block.hpp"
 
 extern Game game;
@@ -18,7 +18,7 @@ void BlockSystem()
         }
     }
 
-    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && !IsOverUI())
     {
         if (block_to_remove == nullptr)
         {
