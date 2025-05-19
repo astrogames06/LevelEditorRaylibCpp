@@ -86,4 +86,11 @@ void Enemy::Reset()
     x = origin_pos.x;
     y = origin_pos.y;
     velocity = {0, 0};
+    if (direction)
+    {
+        Image flipped_img = LoadImageFromTexture(texture);
+        ImageFlipHorizontal(&flipped_img);
+        texture = LoadTextureFromImage(flipped_img);
+    }
+    direction = false;
 }
