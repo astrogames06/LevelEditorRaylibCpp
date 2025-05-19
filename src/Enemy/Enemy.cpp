@@ -41,6 +41,9 @@ void Enemy::Update()
                 else if (velocity.x < 0) x = block->rec.x + block->rec.width;
                 velocity.x = 0;
 
+                Image flipped_img = LoadImageFromTexture(texture);
+                ImageFlipHorizontal(&flipped_img);
+                texture = LoadTextureFromImage(flipped_img);
                 direction = !direction;
                 break;
             }
@@ -68,16 +71,6 @@ void Enemy::Update()
                 isOnGround = true;
                 break;
             }
-        }
-
-        static bool canJump = true;
-        if (isOnGround && (IsKeyDown(KEY_SPACE) || IsKeyDown(KEY_W)) && canJump) {
-            velocity.y = jumpForce;
-            isOnGround = false;
-            canJump = false;
-        }
-        if (!(IsKeyDown(KEY_SPACE) || IsKeyDown(KEY_W))) {
-            canJump = true;
         }
     }
 }

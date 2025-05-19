@@ -4,6 +4,7 @@
 #include "../UI/UI.hpp"
 #include "../Block/Block.hpp"
 #include "../Enemy/Enemy.hpp"
+#include "../Utils/Utils.hpp"
 
 extern Game game;
 
@@ -19,7 +20,7 @@ void BlockSystem()
         }
     }
 
-    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && !IsOverUI())
+    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && !IsOverUI() && !IsOverEntity())
     {
         if (block_to_remove == nullptr)
         {
@@ -40,14 +41,18 @@ void MoveSystem()
     {
         Rectangle rect = {(float)entity->x, (float)entity->y, game.CELL_SIZE, game.CELL_SIZE};
 
-        if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && CheckCollisionPointRec(game.world_mouse_pos, rect) && !game.dragging)
+        if (
+            IsMouseButtonDown(MOUSE_BUTTON_LEFT)
+            && CheckCollisionPointRec(game.world_mouse_pos, rect)
+            && !game.dragging
+        )
         {
             game.selected_entity = entity.get();
             game.dragging = true;
         }
     }
 
-    if (game.selected_entity != nullptr)
+    if (game.selected_entity != nullptr && !IsOverUI() && !IsOverEntityDragging(game.selected_entity))
     {
         game.selected_entity->x = game.world_mouse_pos.x;
         game.selected_entity->y = game.world_mouse_pos.y;
@@ -80,7 +85,7 @@ void MoveSystem()
 
 void EnemySystem()
 {
-    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && !IsOverUI())
+    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && !IsOverUI() && !IsOverEntity())
     {
         // if (block_to_remove == nullptr)
         // {
