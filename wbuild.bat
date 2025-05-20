@@ -1,1 +1,1 @@
-em++ -o index.html src/main.cpp src/Game/Game.cpp src/Entity/Entity.cpp src/Player/Player.cpp src/UI/UI.cpp src/Systems/WorldEditor.cpp -std=c++17 -Os -Wall ./lib/libraylib.web.a -I. -I include/ -L. -L lib/ -s USE_GLFW=3 --shell-file shell.html -DPLATFORM_WEB
+em++ -o index.html src/main.cpp src/Game/Game.cpp src/Entity/Entity.cpp src/Player/Player.cpp src/Enemy/Enemy.cpp src/UI/UI.cpp src/Systems/WorldEditor.cpp -std=c++17 -Os -Wall ./lib/libraylib.web.a -I. -I include/ -L. -L lib/ -s USE_GLFW=3 --preload-file assets --shell-file shell.html -DPLATFORM_WEB
