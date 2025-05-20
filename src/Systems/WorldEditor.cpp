@@ -28,6 +28,7 @@ void EraseSystem()
                 (float)entity->x, (float)entity->y, game.CELL_SIZE, game.CELL_SIZE
             }))
             {
+                // Makes sure that you arent trying to erase the player
                 if (dynamic_cast<Player*>(entity.get()) == nullptr)
                     entity_to_remove = entity.get();
             }
