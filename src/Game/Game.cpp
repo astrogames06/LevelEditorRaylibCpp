@@ -46,10 +46,8 @@ void Game::Update()
         // VERY IMPORTANT FOR PLACING ENTITIES SYSTEMS
         RunWorldEditorSystem();
     }
-    if (running)
+    else if (running)
     {
-        camera.target = {(float)GetEntityOfType<Player>()->x, (float)GetEntityOfType<Player>()->y};
-        camera.offset = { WIDTH / 2.0f, HEIGHT / 2.0f };
         for (std::unique_ptr<Entity>& entity : entities)
         {
             entity->Update();
