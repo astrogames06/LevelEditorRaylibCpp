@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <algorithm>
+#include <raygui.h>
 
 #include "../UI/UI.hpp"
 #include "../Block/Block.hpp"
@@ -87,6 +88,7 @@ void Game::Update()
     }
 }
 
+extern int mode_icon;
 void Game::Draw()
 {
     std::cout << mode << '\n';
@@ -111,6 +113,9 @@ void Game::Draw()
     }
     EndMode2D();
     DrawUI();
+
+    if (!running)
+        GuiDrawIcon(mode_icon, GetMouseX()-5, GetMouseY()-10, 1, DARKGRAY);
 
     EndDrawing();
 }

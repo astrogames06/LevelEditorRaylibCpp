@@ -1,11 +1,13 @@
 #include "UI.hpp"
 
 #include "../Game/Game.hpp"
+#include "../Systems/WorldEditor.hpp"
 
 #include <raygui.h>
 #include <iostream>
 
 extern Game game;
+int mode_icon = 23;
 
 int GuiButtonRounded(Rectangle bounds, const char *text, float roundness, int segments, std::vector<Rectangle>& v);
 void DrawUI()
@@ -21,21 +23,25 @@ void DrawUI()
         if (GuiButtonRounded({10, 10, 45, 45}, "#23#", 5.f, 5.f, game.UI_recs))
         {
             game.mode = BLOCK;
+            mode_icon = 23;
         }
 
         if (GuiButtonRounded({65, 10, 45, 45}, "#28#", 5.f, 5.f, game.UI_recs))
         {
             game.mode = ERASE;
+            mode_icon = 28;
         }
 
         if (GuiButtonRounded({120, 10, 45, 45}, "#21#", 5.f, 5.f, game.UI_recs))
         {
             game.mode = MOVE;
+            mode_icon = 21;
         }
 
         if (GuiButtonRounded({175, 10, 45, 45}, "#152#", 5.f, 5.f, game.UI_recs))
         {
             game.mode = ENEMY;
+            mode_icon = 152;
         }
     }
 
