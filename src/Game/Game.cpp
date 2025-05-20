@@ -8,6 +8,7 @@
 #include "../Block/Block.hpp"
 #include "../Systems/WorldEditor.hpp"
 #include "../Enemy/Enemy.hpp"
+#include "../Systems/MainSystems.hpp"
 
 void Game::Init()
 {
@@ -39,40 +40,8 @@ void Game::Update()
 {
     if (!running)
     {
-        world_mouse_pos = GetScreenToWorld2D(GetMousePosition(), camera);
-
-        if ((IsKeyPressed(KEY_W) || IsKeyDown(KEY_UP)))
-        {
-            camera.target.y -= CELL_SIZE;
-            std::for_each(cells.begin(), cells.end(), [this](Rectangle& cell) {
-                cell.y -= CELL_SIZE;
-            });
-        }
-        if ((IsKeyPressed(KEY_A) || IsKeyDown(KEY_LEFT)))
-        {
-            camera.target.x -= CELL_SIZE;
-            std::for_each(cells.begin(), cells.end(), [this](Rectangle& cell) {
-                cell.x -= CELL_SIZE;
-            });
-        }
-        if ((IsKeyPressed(KEY_S) || IsKeyDown(KEY_DOWN))) {
-            camera.target.y += CELL_SIZE;
-            std::for_each(cells.begin(), cells.end(), [this](Rectangle& cell) {
-                cell.y += CELL_SIZE;
-            });
-        }
-        if ((IsKeyPressed(KEY_D) || IsKeyDown(KEY_RIGHT)))
-        {
-            camera.target.x += CELL_SIZE;
-            std::for_each(cells.begin(), cells.end(), [this](Rectangle& cell) {
-                cell.x += CELL_SIZE;
-            });
-        }
-
-        for (Rectangle& cell : cells)
-        {
-            if (CheckCollisionPointRec(world_mouse_pos, cell)) world_mouse_pos = {cell.x, cell.y};
-        }
+        RunMouseControl();
+        RunCameraControl();
 
         // VERY IMPORTANT FOR PLACING ENTITIES SYSTEMS
         RunWorldEditorSystem();

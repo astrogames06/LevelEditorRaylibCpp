@@ -70,6 +70,8 @@
         "deque": "cpp",
         "execution": "cpp",
         "ratio": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "__hash_table": "cpp",
+        "unordered_map": "cpp"
     }
 }
