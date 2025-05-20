@@ -67,7 +67,7 @@ void Player::Update()
     }
 
     static bool canJump = true;
-    if (isOnGround && (IsKeyDown(KEY_SPACE) || IsKeyDown(KEY_W)) && canJump) {
+    if (isOnGround && (IsKeyDown(KEY_SPACE) || IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) && canJump) {
         velocity.y = jumpForce;
         isOnGround = false;
         canJump = false;
