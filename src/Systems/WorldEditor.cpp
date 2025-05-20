@@ -12,7 +12,6 @@ extern Game game;
 
 void BlockSystem()
 {
-
     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && !IsOverUI() && !IsOverEntity())
     {
         game.entities.push_back(std::make_unique<Block>(game.world_mouse_pos.x, game.world_mouse_pos.y));
@@ -29,7 +28,8 @@ void EraseSystem()
                 (float)entity->x, (float)entity->y, game.CELL_SIZE, game.CELL_SIZE
             }))
             {
-                entity_to_remove = entity.get();
+                if (dynamic_cast<Player*>(entity.get()) == nullptr)
+                    entity_to_remove = entity.get();
             }
         }
 
