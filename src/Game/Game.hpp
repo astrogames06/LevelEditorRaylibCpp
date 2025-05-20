@@ -11,8 +11,9 @@
 
 enum EDIT_MODE
 {
-    MOVE,
     BLOCK,
+    ERASE,
+    MOVE,
     ENEMY
 };
 

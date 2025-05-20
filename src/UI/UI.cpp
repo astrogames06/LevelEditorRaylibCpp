@@ -23,12 +23,17 @@ void DrawUI()
             game.mode = BLOCK;
         }
 
-        if (GuiButtonRounded({65, 10, 45, 45}, "#21#", 5.f, 5.f, game.UI_recs))
+        if (GuiButtonRounded({65, 10, 45, 45}, "#28#", 5.f, 5.f, game.UI_recs))
+        {
+            game.mode = ERASE;
+        }
+
+        if (GuiButtonRounded({120, 10, 45, 45}, "#21#", 5.f, 5.f, game.UI_recs))
         {
             game.mode = MOVE;
         }
 
-        if (GuiButtonRounded({120, 10, 45, 45}, "#152#", 5.f, 5.f, game.UI_recs))
+        if (GuiButtonRounded({175, 10, 45, 45}, "#152#", 5.f, 5.f, game.UI_recs))
         {
             game.mode = ENEMY;
         }

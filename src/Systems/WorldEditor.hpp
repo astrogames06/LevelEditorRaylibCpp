@@ -2,6 +2,7 @@
 #define WORLDEDITOR_H
 
 void BlockSystem();
+void EraseSystem();
 void MoveSystem();
 void EnemySystem();
 

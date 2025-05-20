@@ -10,27 +10,32 @@ extern Game game;
 
 void BlockSystem()
 {
-    Entity* block_to_remove = nullptr;
-    for (int i = 0; i < game.GetEntitiesOfType<Block>().size(); i++)
-    {
-        if (CheckCollisionPointRec(game.world_mouse_pos, game.GetEntitiesOfType<Block>()[i]->rec))
-        {
-            block_to_remove = game.GetEntitiesOfType<Block>()[i];
-            break;
-        }
-    }
 
-    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && !IsOverUI() && !IsOverEntity())
+    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && !IsOverUI() && !IsOverEntity())
     {
-        if (block_to_remove == nullptr)
+        game.entities.push_back(std::make_unique<Block>(game.world_mouse_pos.x, game.world_mouse_pos.y));
+    }
+}
+void EraseSystem()
+{
+    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && !IsOverUI())
+    {
+        Entity* entity_to_remove = nullptr;
+        for (std::unique_ptr<Entity>& entity : game.entities)
         {
-            game.entities.push_back(std::make_unique<Block>(game.world_mouse_pos.x, game.world_mouse_pos.y));
+            if (CheckCollisionPointRec(game.world_mouse_pos, {
+                (float)entity->x, (float)entity->y, game.CELL_SIZE, game.CELL_SIZE
+            }))
+            {
+                entity_to_remove = entity.get();
+            }
         }
-        else
+
+        if (entity_to_remove != nullptr)
         {
             game.entities.erase(std::remove_if(game.entities.begin(), game.entities.end(),
-            [block_to_remove](const std::unique_ptr<Entity>& ptr) {
-                return ptr.get() == block_to_remove;
+            [entity_to_remove](const std::unique_ptr<Entity>& ptr) {
+                return ptr.get() == entity_to_remove;
             }), game.entities.end());
         }
     }
@@ -85,7 +90,7 @@ void MoveSystem()
 
 void EnemySystem()
 {
-    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && !IsOverUI() && !IsOverEntity())
+    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && !IsOverUI() && !IsOverEntity())
     {
         // if (block_to_remove == nullptr)
         // {
@@ -107,6 +112,9 @@ void RunWorldEditorSystem()
     {
     case BLOCK:
         BlockSystem();
+        break;
+    case ERASE:
+        EraseSystem();
         break;
     case MOVE:
         MoveSystem();
