@@ -1,5 +1,7 @@
 #include "WorldEditor.hpp"
 
+#include <algorithm>
+
 #include "../Game/Game.hpp"
 #include "../UI/UI.hpp"
 #include "../Block/Block.hpp"
