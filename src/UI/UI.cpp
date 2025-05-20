@@ -53,6 +53,7 @@ void DrawUI()
             return;
         }
     }
+    DrawFPS(20, game.HEIGHT-20);
 }
 bool IsOverUI()
 {
