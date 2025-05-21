@@ -12,6 +12,8 @@
 
 void Game::Init()
 {
+    GuiLoadIcons("assets/iconset.rgi", false);
+
     std::unique_ptr<Player> player = std::make_unique<Player>();
     player->origin_pos = {5*CELL_SIZE, 5*CELL_SIZE};
     player->x = 5*CELL_SIZE;

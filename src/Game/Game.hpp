@@ -14,7 +14,8 @@ enum EDIT_MODE
     BLOCK,
     ERASE,
     MOVE,
-    ENEMY
+    ENEMY,
+    SHROOM
 };
 
 class Game

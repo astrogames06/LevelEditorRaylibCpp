@@ -7,6 +7,7 @@
 #include "../Block/Block.hpp"
 #include "../Enemy/Enemy.hpp"
 #include "../Utils/Utils.hpp"
+#include "../Shroom/Shroom.hpp"
 
 extern Game game;
 
@@ -95,17 +96,15 @@ void EnemySystem()
 {
     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && !IsOverUI() && !IsOverEntity())
     {
-        // if (block_to_remove == nullptr)
-        // {
         game.entities.push_back(std::make_unique<Enemy>(game.world_mouse_pos.x, game.world_mouse_pos.y));
-        // }
-        // else
-        // {
-        //     game.entities.erase(std::remove_if(game.entities.begin(), game.entities.end(),
-        //     [block_to_remove](const std::unique_ptr<Entity>& ptr) {
-        //         return ptr.get() == block_to_remove;
-        //     }), game.entities.end());
-        // }
+    }
+}
+
+void MushroomSystem()
+{
+    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && !IsOverUI() && !IsOverEntity())
+    {
+        game.entities.push_back(std::make_unique<Shroom>(game.world_mouse_pos.x, game.world_mouse_pos.y));
     }
 }
 
@@ -124,6 +123,9 @@ void RunWorldEditorSystem()
         break;
     case ENEMY:
         EnemySystem();
+        break;
+    case SHROOM:
+        MushroomSystem();
         break;
     default:
         break;

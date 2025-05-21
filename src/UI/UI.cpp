@@ -43,6 +43,12 @@ void DrawUI()
             game.mode = ENEMY;
             mode_icon = 152;
         }
+
+        if (GuiButtonRounded({230, 10, 45, 45}, "#220#", 5.f, 5.f, game.UI_recs))
+        {
+            game.mode = SHROOM;
+            mode_icon = 220;
+        }
     }
 
     if (game.running)
