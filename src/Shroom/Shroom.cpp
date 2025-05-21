@@ -23,7 +23,8 @@ void Shroom::Update()
     ))
     {
         if (!game.GetEntityOfType<Player>()->isOnGround && 
-            game.GetEntityOfType<Player>()->x+game.CELL_SIZE > x
+            game.GetEntityOfType<Player>()->x+game.CELL_SIZE > x &&
+            game.GetEntityOfType<Player>()->velocity.y > 0
         )
         {
             game.GetEntityOfType<Player>()->velocity.y = 0;
