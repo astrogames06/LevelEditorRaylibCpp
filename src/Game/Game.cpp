@@ -60,8 +60,9 @@ void Game::Update()
 extern int mode_icon;
 void Game::Draw()
 {
-    std::cout << mode << '\n';
-    std::cout << GetEntitiesOfType<Enemy>().size() << '\n';
+    // std::cout << mode << '\n';
+    // std::cout << GetEntitiesOfType<Enemy>().size() << '\n';
+    
     BeginDrawing();
     ClearBackground(WHITE);
     BeginMode2D(camera);

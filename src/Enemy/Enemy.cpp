@@ -26,18 +26,19 @@ void Enemy::Update()
 
     velocity.y += gravity * dt;
 
+    // std::cout << velocity.x << " " << velocity.y << " " << isOnGround << '\n';
+
     // LEFT AND RIGHT
     if (isOnGround)
         velocity.x = direction ? moveSpeed : -moveSpeed;
     else
-        velocity.x = direction ? (moveSpeed/5) : -(moveSpeed/5);
+        velocity.x = direction ? (moveSpeed/3) : -(moveSpeed/3);
     
     x += velocity.x * dt;
     for (const Block* block : game.GetEntitiesOfType<Block>()) {
         if (CheckCollisionRecs({(float)x, (float)y, game.CELL_SIZE, game.CELL_SIZE}, block->rec)) {
             if (velocity.x > 0) x = block->rec.x - game.CELL_SIZE;
             else if (velocity.x < 0) x = block->rec.x + block->rec.width;
-            velocity.x = 0;
 
             Image flipped_img = LoadImageFromTexture(texture);
             ImageFlipHorizontal(&flipped_img);

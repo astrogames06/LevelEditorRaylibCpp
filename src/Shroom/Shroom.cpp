@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "../Game/Game.hpp"
+#include "../Enemy/Enemy.hpp"
 
 extern Game game;
 
@@ -13,22 +14,37 @@ void Shroom::Init()
 
 void Shroom::Update()
 {
-    if (CheckCollisionRecs(
-        {(float)x, (float)y, game.CELL_SIZE, game.CELL_SIZE},
-        {
-            (float)game.GetEntityOfType<Player>()->rec.x,
-            (float)game.GetEntityOfType<Player>()->rec.y,
-            game.CELL_SIZE, game.CELL_SIZE
-        }
-    ))
+    for (std::unique_ptr<Entity>& entity : game.entities)
     {
-        if (!game.GetEntityOfType<Player>()->isOnGround && 
-            game.GetEntityOfType<Player>()->x+game.CELL_SIZE > x &&
-            game.GetEntityOfType<Player>()->velocity.y > 0
-        )
+        if (CheckCollisionRecs(
+            {(float)x, (float)y, game.CELL_SIZE, game.CELL_SIZE},
+            {
+                (float)entity->x,
+                (float)entity->y,
+                game.CELL_SIZE, game.CELL_SIZE
+            }
+        ))
         {
-            game.GetEntityOfType<Player>()->velocity.y = 0;
-            game.GetEntityOfType<Player>()->velocity.y -= bounciness;
+            if (Player* player = dynamic_cast<Player*>(entity.get()))
+            {
+                if (!player->isOnGround &&
+                    player->x + game.CELL_SIZE > x &&
+                    player->velocity.y > 0)
+                {
+                    player->velocity.y = 0;
+                    player->velocity.y -= bounciness;
+                }
+            }
+            else if (Enemy* enemy = dynamic_cast<Enemy*>(entity.get()))
+            {
+                if (!enemy->isOnGround &&
+                    enemy->x + game.CELL_SIZE > x &&
+                    enemy->velocity.y > 0)
+                {
+                    enemy->velocity.y = 0;
+                    enemy->velocity.y -= bounciness;
+                }
+            }
         }
     }
 }
