@@ -55,6 +55,15 @@ void Game::Update()
             entity->Update();
         }
     }
+    // Remove it if Entity->alive = false;
+    game.entities.erase(
+        std::remove_if(
+            game.entities.begin(),
+            game.entities.end(),
+            [](const std::unique_ptr<Entity>& e) { return !e->alive; }
+        ),
+        game.entities.end()
+    );
 }
 
 extern int mode_icon;

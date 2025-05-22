@@ -22,7 +22,6 @@ void EraseSystem()
 {
     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && !IsOverUI())
     {
-        Entity* entity_to_remove = nullptr;
         for (std::unique_ptr<Entity>& entity : game.entities)
         {
             if (CheckCollisionPointRec(game.world_mouse_pos, {
@@ -31,16 +30,8 @@ void EraseSystem()
             {
                 // Makes sure that you arent trying to erase the player
                 if (dynamic_cast<Player*>(entity.get()) == nullptr)
-                    entity_to_remove = entity.get();
+                    entity->Kill();
             }
-        }
-
-        if (entity_to_remove != nullptr)
-        {
-            game.entities.erase(std::remove_if(game.entities.begin(), game.entities.end(),
-            [entity_to_remove](const std::unique_ptr<Entity>& ptr) {
-                return ptr.get() == entity_to_remove;
-            }), game.entities.end());
         }
     }
 }
