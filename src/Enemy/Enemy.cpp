@@ -14,7 +14,19 @@ void Enemy::Init()
 
 void Enemy::Update()
 {
-    // Player collision and movement ! AI GENERATED !
+    // Check if player lands on top of enemy
+    Player* player = game.GetEntityOfType<Player>();
+    if (!player->isOnGround &&
+        player->x + game.CELL_SIZE > x &&
+        player->velocity.y > 0 &&
+        CheckCollisionRecs({
+            (float)player->x, (float)player->y, game.CELL_SIZE, game.CELL_SIZE
+        }, {(float)x, (float)y, game.CELL_SIZE, game.CELL_SIZE}))
+    {
+        this->Kill();
+    }
+
+    // Enemy collision and movement ! AI GENERATED !
     float dt = GetFrameTime();
     const float gravity = 500.0f;
     const float jumpForce = -300.0f;

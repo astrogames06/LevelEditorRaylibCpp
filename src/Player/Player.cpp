@@ -50,19 +50,25 @@ void Player::Update()
 
     y += velocity.y * dt;
     rec.y = (float)y;
-    isOnGround = false;
     for (const Block* block : game.GetEntitiesOfType<Block>()) {
         if (CheckCollisionRecs(rec, block->rec)) {
             if (velocity.y > 0) {
                 y = block->rec.y - rec.height;
                 velocity.y = 0;
-                isOnGround = true;
             }
             else if (velocity.y < 0) {
                 y = block->rec.y + block->rec.height;
                 velocity.y = 0;
             }
             rec.y = (float)y;
+        }
+    }
+    isOnGround = false;
+    Rectangle groundCheck = { (float)x, (float)y + game.CELL_SIZE + 1, game.CELL_SIZE, 2 };
+    for (const Block* block : game.GetEntitiesOfType<Block>()) {
+        if (CheckCollisionRecs(groundCheck, block->rec)) {
+            isOnGround = true;
+            break;
         }
     }
 
@@ -80,10 +86,13 @@ void Player::Update()
 void Player::Draw()
 {
     DrawRectangleRec(rec, BLUE);
+
+    DrawText(std::to_string(isOnGround).c_str(), x, y, 20, BLACK);
 }
 
 void Player::Reset()
 {
+    isOnGround = false;
     rec.x = origin_pos.x;
     rec.y = origin_pos.y;
     x = origin_pos.x;
