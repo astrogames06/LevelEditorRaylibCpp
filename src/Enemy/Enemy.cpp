@@ -92,6 +92,7 @@ void Enemy::Draw()
 
 void Enemy::Reset()
 {
+    Entity::Reset();
     isOnGround = false;
     x = origin_pos.x;
     y = origin_pos.y;

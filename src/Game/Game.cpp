@@ -52,7 +52,7 @@ void Game::Update()
     {
         for (std::unique_ptr<Entity>& entity : entities)
         {
-            entity->Update();
+            if (entity->alive) entity->Update();
         }
     }
     // Remove it if Entity->alive = false;
@@ -60,7 +60,7 @@ void Game::Update()
         std::remove_if(
             game.entities.begin(),
             game.entities.end(),
-            [](const std::unique_ptr<Entity>& e) { return !e->alive; }
+            [](const std::unique_ptr<Entity>& e) { return e->remove; }
         ),
         game.entities.end()
     );
@@ -78,7 +78,7 @@ void Game::Draw()
 
     for (std::unique_ptr<Entity>& entity : entities)
     {
-        entity->Draw();
+        if (entity->alive) entity->Draw();
     }
 
     if (!running)

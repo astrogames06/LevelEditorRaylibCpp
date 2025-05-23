@@ -56,5 +56,5 @@ void Shroom::Draw()
 
 void Shroom::Reset()
 {
-
+    Entity::Reset();
 }

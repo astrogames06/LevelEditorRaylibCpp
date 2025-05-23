@@ -92,9 +92,11 @@ void Player::Draw()
 
 void Player::Reset()
 {
+    Entity::Reset();
     isOnGround = false;
     rec.x = origin_pos.x;
     rec.y = origin_pos.y;
     x = origin_pos.x;
     y = origin_pos.y;
+    velocity = {0, 0};
 }
