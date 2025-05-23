@@ -6,7 +6,6 @@
 class Player : public Entity
 {
 public:
-    Rectangle rec;
     Vector2 velocity = {0, 0};
     bool isOnGround;
 

@@ -9,15 +9,14 @@ extern Game game;
 
 void Player::Init()
 {
-    rec = {origin_pos.x, origin_pos.y, game.CELL_SIZE, game.CELL_SIZE};
+    x = origin_pos.x;
+    y = origin_pos.y;
 }
 
 void Player::Update()
 {
     game.camera.target = {(float)x, (float)y};
     game.camera.offset = { game.WIDTH / 2.0f, game.HEIGHT / 2.0f };
-    x = rec.x;
-    y = rec.y;
     // Moving player in MOVE mode
     if (game.mode == MOVE)
     {
@@ -38,35 +37,35 @@ void Player::Update()
     velocity.y += gravity * dt;
 
     x += velocity.x * dt;
-    rec.x = (float)x;
     for (const Block* block : game.GetEntitiesOfType<Block>()) {
-        if (CheckCollisionRecs(rec, block->rec)) {
-            if (velocity.x > 0) x = block->rec.x - rec.width;
-            else if (velocity.x < 0) x = block->rec.x + block->rec.width;
+        if (CheckCollisionRecs({(float)x, (float)y, game.CELL_SIZE, game.CELL_SIZE},
+        {(float)block->x, (float)block->y, game.CELL_SIZE, game.CELL_SIZE}
+    )) {
+            if (velocity.x > 0) x = block->x - game.CELL_SIZE;
+            else if (velocity.x < 0) x = block->x + game.CELL_SIZE;
             velocity.x = 0;
-            rec.x = (float)x;
         }
     }
 
     y += velocity.y * dt;
-    rec.y = (float)y;
     for (const Block* block : game.GetEntitiesOfType<Block>()) {
-        if (CheckCollisionRecs(rec, block->rec)) {
+        if (CheckCollisionRecs({(float)x, (float)y, game.CELL_SIZE, game.CELL_SIZE}, 
+            {(float)block->x, (float)block->y, game.CELL_SIZE, game.CELL_SIZE}
+        )) {
             if (velocity.y > 0) {
-                y = block->rec.y - rec.height;
+                y = block->y - game.CELL_SIZE;
                 velocity.y = 0;
             }
             else if (velocity.y < 0) {
-                y = block->rec.y + block->rec.height;
+                y = block->y + game.CELL_SIZE;
                 velocity.y = 0;
             }
-            rec.y = (float)y;
         }
     }
     isOnGround = false;
     Rectangle groundCheck = { (float)x, (float)y + game.CELL_SIZE + 1, game.CELL_SIZE, 2 };
     for (const Block* block : game.GetEntitiesOfType<Block>()) {
-        if (CheckCollisionRecs(groundCheck, block->rec)) {
+        if (CheckCollisionRecs(groundCheck, {(float)block->x, (float)block->y, game.CELL_SIZE, game.CELL_SIZE})) {
             isOnGround = true;
             break;
         }
@@ -85,17 +84,15 @@ void Player::Update()
 
 void Player::Draw()
 {
-    DrawRectangleRec(rec, BLUE);
+    DrawRectangle(x, y, game.CELL_SIZE, game.CELL_SIZE, BLUE);
 
-    DrawText(std::to_string(isOnGround).c_str(), x, y, 20, BLACK);
+    // DrawText(std::to_string(isOnGround).c_str(), x, y, 20, BLACK);
 }
 
 void Player::Reset()
 {
     Entity::Reset();
     isOnGround = false;
-    rec.x = origin_pos.x;
-    rec.y = origin_pos.y;
     x = origin_pos.x;
     y = origin_pos.y;
     velocity = {0, 0};

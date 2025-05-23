@@ -48,9 +48,11 @@ void Enemy::Update()
     
     x += velocity.x * dt;
     for (const Block* block : game.GetEntitiesOfType<Block>()) {
-        if (CheckCollisionRecs({(float)x, (float)y, game.CELL_SIZE, game.CELL_SIZE}, block->rec)) {
-            if (velocity.x > 0) x = block->rec.x - game.CELL_SIZE;
-            else if (velocity.x < 0) x = block->rec.x + block->rec.width;
+        if (CheckCollisionRecs({(float)x, (float)y, game.CELL_SIZE, game.CELL_SIZE},
+            {(float)block->x, (float)block->y, game.CELL_SIZE, game.CELL_SIZE}
+        )) {
+            if (velocity.x > 0) x = block->x - game.CELL_SIZE;
+            else if (velocity.x < 0) x = block->x + game.CELL_SIZE;
 
             Image flipped_img = LoadImageFromTexture(texture);
             ImageFlipHorizontal(&flipped_img);
@@ -63,13 +65,15 @@ void Enemy::Update()
     // TOP AND BOTTOM
     y += velocity.y * dt;
     for (const Block* block : game.GetEntitiesOfType<Block>()) {
-        if (CheckCollisionRecs({(float)x, (float)y, game.CELL_SIZE, game.CELL_SIZE}, block->rec)) {
+        if (CheckCollisionRecs({(float)x, (float)y, game.CELL_SIZE, game.CELL_SIZE},
+        {(float)block->x, (float)block->y, game.CELL_SIZE, game.CELL_SIZE}
+    )) {
             if (velocity.y > 0) {
-                y = block->rec.y - game.CELL_SIZE;
+                y = block->y - game.CELL_SIZE;
                 velocity.y = 0;
             }
             else if (velocity.y < 0) {
-                y = block->rec.y + block->rec.height;
+                y = block->y + game.CELL_SIZE;
                 velocity.y = 0;
             }
         }
@@ -78,7 +82,9 @@ void Enemy::Update()
     isOnGround = false;
     Rectangle groundCheck = { (float)x, (float)y + game.CELL_SIZE + 1, game.CELL_SIZE, 2 };
     for (const Block* block : game.GetEntitiesOfType<Block>()) {
-        if (CheckCollisionRecs(groundCheck, block->rec)) {
+        if (CheckCollisionRecs(groundCheck, 
+            {(float)block->x, (float)block->y, game.CELL_SIZE, game.CELL_SIZE}
+        )) {
             isOnGround = true;
             break;
         }

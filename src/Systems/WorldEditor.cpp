@@ -59,14 +59,14 @@ void MoveSystem()
 
         if (Block* block = dynamic_cast<Block*>(game.selected_entity))
         {
-            block->rec.x = game.world_mouse_pos.x;
-            block->rec.y = game.world_mouse_pos.y;
+            block->x = game.world_mouse_pos.x;
+            block->y = game.world_mouse_pos.y;
         }
         else if (Player* plr = dynamic_cast<Player*>(game.selected_entity))
         {
             plr->origin_pos = game.world_mouse_pos;
-            plr->rec.x = game.world_mouse_pos.x;
-            plr->rec.y = game.world_mouse_pos.y;
+            plr->x = game.world_mouse_pos.x;
+            plr->y = game.world_mouse_pos.y;
         }
         else if (Enemy* enemy = dynamic_cast<Enemy*>(game.selected_entity))
         {
