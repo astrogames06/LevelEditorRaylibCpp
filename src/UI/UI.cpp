@@ -9,10 +9,7 @@
 extern Game game;
 int mode_icon = 23;
 
-// Allows for drawing rounded buttons
-// Defined here from function in <raygui.h>
 int GuiButtonRounded(Rectangle bounds, const char *text, float roundness, int segments, std::vector<Rectangle>& v);
-
 void DrawUI()
 {
     if (!game.running)
