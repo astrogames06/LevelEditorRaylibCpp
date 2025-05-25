@@ -9,6 +9,7 @@ extern Game game;
 
 void Player::Init()
 {
+    type = ENTITY_TYPE::PLAYER_TYPE;
     x = origin_pos.x;
     y = origin_pos.y;
 }

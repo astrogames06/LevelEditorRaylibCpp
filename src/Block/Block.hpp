@@ -10,6 +10,7 @@ extern Game game;
 class Block : public Entity {
 public:
     Block(float x, float y) {
+        this->type = ENTITY_TYPE::BLOCK_TYPE;
         this->x = x;
         this->y = y;
     }

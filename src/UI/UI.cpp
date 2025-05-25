@@ -39,6 +39,7 @@ void DrawUI()
         {
             game.mode = MOVE;
             mode_icon = 21;
+            LoadDataJSON();
         }
 
         if (GuiButtonRounded({175, 10, 45, 45}, "#152#", 5.f, 5.f, game.UI_recs))

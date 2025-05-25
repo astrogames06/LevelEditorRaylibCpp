@@ -3,9 +3,18 @@
 
 #include <raylib.h>
 
+enum ENTITY_TYPE
+{
+    PLAYER_TYPE,
+    BLOCK_TYPE,
+    ENEMY_TYPE,
+    SHROOM_TYPE
+};
+
 class Entity
 {
 public:
+    ENTITY_TYPE type;
     int x;
     int y;
     Texture2D texture;

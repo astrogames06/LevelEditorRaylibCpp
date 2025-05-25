@@ -3,6 +3,10 @@
 
 #include "../Entity/Entity.hpp"
 
+#include "../Data/Data.hpp"
+
+#include "nlohmann/json.hpp"
+
 class Enemy : public Entity
 {
 public:
@@ -13,6 +17,7 @@ public:
     Vector2 origin_pos;
 
     Enemy(float x, float y) {
+        type = ENTITY_TYPE::ENEMY_TYPE;
         this->x = x;
         this->y = y;
         origin_pos = {x, y};
