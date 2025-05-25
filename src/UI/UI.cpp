@@ -6,6 +6,8 @@
 #include <raygui.h>
 #include <iostream>
 
+#include "../Data/Data.hpp"
+
 extern Game game;
 int mode_icon = 23;
 
@@ -24,6 +26,7 @@ void DrawUI()
         {
             game.mode = BLOCK;
             mode_icon = 23;
+            SaveDataJSON();
         }
 
         if (GuiButtonRounded({65, 10, 45, 45}, "#28#", 5.f, 5.f, game.UI_recs))
