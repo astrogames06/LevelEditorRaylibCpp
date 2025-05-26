@@ -7,9 +7,18 @@
 
 extern Game game;
 
+Texture2D left_texture;
+Texture2D right_texture;
+
 void Enemy::Init()
 {
     texture = LoadTexture("assets/enemy.png");
+
+    left_texture = texture;
+
+    Image flipped_img = LoadImageFromTexture(texture);
+    ImageFlipHorizontal(&flipped_img);
+    right_texture = LoadTextureFromImage(flipped_img);
 }
 
 void Enemy::Update()
@@ -54,10 +63,8 @@ void Enemy::Update()
             if (velocity.x > 0) x = block->x - game.CELL_SIZE;
             else if (velocity.x < 0) x = block->x + game.CELL_SIZE;
 
-            Image flipped_img = LoadImageFromTexture(texture);
-            ImageFlipHorizontal(&flipped_img);
-            texture = LoadTextureFromImage(flipped_img);
             direction = !direction;
+            texture = (direction) ? right_texture : left_texture;
             break;
         }
     }
