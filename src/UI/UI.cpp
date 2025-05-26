@@ -26,7 +26,6 @@ void DrawUI()
         {
             game.mode = BLOCK;
             mode_icon = 23;
-            SaveDataJSON();
         }
 
         if (GuiButtonRounded({65, 10, 45, 45}, "#28#", 5.f, 5.f, game.UI_recs))
@@ -39,7 +38,6 @@ void DrawUI()
         {
             game.mode = MOVE;
             mode_icon = 21;
-            LoadDataJSON();
         }
 
         if (GuiButtonRounded({175, 10, 45, 45}, "#152#", 5.f, 5.f, game.UI_recs))
@@ -52,6 +50,15 @@ void DrawUI()
         {
             game.mode = SHROOM;
             mode_icon = 220;
+        }
+
+        if (GuiButtonRounded({(float)10, (float)game.HEIGHT-55, 100, 45}, "IMPORT!", 5.f, 20.f, game.UI_recs))
+        {
+            LoadDataJSON();
+        }
+        if (GuiButtonRounded({(float)game.WIDTH-110, (float)game.HEIGHT-55, 100, 45}, "EXPORT!", 5.f, 20.f, game.UI_recs))
+        {
+            SaveDataJSON();
         }
     }
 
