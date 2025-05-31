@@ -42,15 +42,15 @@
 
 </head>
 <body>
-
+    <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" tabindex="-1"></canvas>
     <div id="uiButtons">
-        <button onclick="document.getElementById('jsonFileInput').click();">Load JSON</button>
-        <button onclick="Module.ccall('SaveDataJSON');">Save JSON</button>
+        <button onclick="document.getElementById('jsonFileInput').click();">Import Game</button>
+        <button onclick="Module.ccall('SaveDataJSON');">Save Game</button>
     </div>
+    <h1>Make sure to save your game!
+    </h1>
 
     <input type="file" id="jsonFileInput" accept=".json" style="display:none" onchange="loadSelectedFile(this)">
-
-    <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" tabindex="-1"></canvas>
 
     <script>
         var Module = {
