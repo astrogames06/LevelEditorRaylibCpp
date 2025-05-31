@@ -42,8 +42,11 @@
 
 </head>
 <body>
-    <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" tabindex="-1"></canvas>
-    <h1>Make sure to save your game!
+    <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" tabindex="-1" style="border: none !important;"></canvas>
+
+    <h1 style="text-align: center;">
+        Make sure to save your game!<br>
+        Made by Jesse Sher
     </h1>
 
     <input type="file" id="jsonFileInput" accept=".json" style="display:none" onchange="loadSelectedFile(this)">
