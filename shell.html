@@ -55,7 +55,7 @@
         var Module = {
             print: (function() {
                 var element = document.getElementById('output');
-                if (element) element.value = ''; // clear output
+                if (element) element.value = '';
                 return function(text) {
                     if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
                     console.log(text);
@@ -65,14 +65,20 @@
                     }
                 };
             })(),
+
             canvas: (function() {
                 return document.getElementById('canvas');
-            })()
+            })(),
+
+            onRuntimeInitialized: function () {
+                console.log("WASM initialized. Ready to load files.");
+                // Optional: flag to check if initialized
+                window.wasmReady = true;
+            }
         };
 
         function loadSelectedFile(input) {
             if (input.files.length === 0) return;
-
             var file = input.files[0];
             var reader = new FileReader();
 
@@ -80,11 +86,17 @@
                 var jsonStr = e.target.result;
                 console.log("Calling LoadDataJSON with JSON:", jsonStr);
 
-                    console.log("Running LoadDataJSON");
+                // If WASM already ready, call immediately
+                if (window.wasmReady) {
                     Module.ccall('LoadDataJSON', null, ['string'], [jsonStr]);
-
+                } else {
+                    // Wait for it to initialize
+                    Module.onRuntimeInitialized = function () {
+                        console.log("Running LoadDataJSON after delayed init");
+                        Module.ccall('LoadDataJSON', null, ['string'], [jsonStr]);
+                    };
+                }
             };
-
 
             reader.readAsText(file);
         }

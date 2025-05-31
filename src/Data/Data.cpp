@@ -86,6 +86,14 @@ void LoadDataJSON(const char* json_str)
     // std::ifstream file("data.json");
     // if (!file.is_open()) return;
 
+    if (!json_str) {
+        std::cerr << "json_str is null!" << std::endl;
+        #ifdef PLATFORM_WEB
+                emscripten_run_script("alert('JSON FILES IS INVALID OR CORRUPTED!')");
+        #endif
+        return;
+    }
+
     json j_loaded = json::parse(json_str);
 
     // Keep player, remove others
