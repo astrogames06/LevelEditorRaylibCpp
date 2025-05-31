@@ -56,13 +56,13 @@ void DrawUI()
             mode_icon = 220;
         }
 
-        if (GuiButtonRounded({(float)10, (float)game.HEIGHT-55, 100, 45}, "IMPORT!", 5.f, 20.f, game.UI_recs))
+        if (GuiButtonRounded({(float)10, (float)game.HEIGHT-55, 100, 45}, "LOAD GAME!", 5.f, 20.f, game.UI_recs))
         {
             #ifdef PLATFORM_WEB
                 emscripten_run_script("document.getElementById('jsonFileInput').click();");
             #endif
         }
-        if (GuiButtonRounded({(float)game.WIDTH-110, (float)game.HEIGHT-55, 100, 45}, "EXPORT!", 5.f, 20.f, game.UI_recs))
+        if (GuiButtonRounded({(float)game.WIDTH-110, (float)game.HEIGHT-55, 100, 45}, "SAVE GAME!", 5.f, 20.f, game.UI_recs))
         {
             SaveDataJSON();
         }
