@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en-us">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
@@ -31,52 +31,67 @@
     <link rel="shortcut icon" href="https://www.raylib.com/favicon.ico">
 
     <style>
-        body { margin: 0px; }
-        canvas.emscripten { border: 0px none; background-color: black; }
+        body { margin: 0; background: #000; color: #fff; font-family: sans-serif; }
+        canvas.emscripten { border: none; background-color: black; display: block; margin: 0 auto; }
+        #uiButtons { position: fixed; top: 10px; left: 10px; z-index: 1000; }
+        button { margin: 5px; padding: 8px 12px; font-size: 14px; }
     </style>
-    <script type='text/javascript' src="https://cdn.jsdelivr.net/gh/eligrey/FileSaver.js/dist/FileSaver.min.js"> </script>
-    <script type='text/javascript'>
-        function saveFileFromMEMFSToDisk(memoryFSname, localFSname)     // This can be called by C/C++ code
-        {
-            var isSafari = false; // Not supported, navigator.userAgent access is being restricted
-            //var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-            var data = FS.readFile(memoryFSname);
-            var blob;
 
-            if (isSafari) blob = new Blob([data.buffer], { type: "application/octet-stream" });
-            else blob = new Blob([data.buffer], { type: "application/octet-binary" });
+    <!-- FileSaver.js for downloading files -->
+    <script src="https://cdn.jsdelivr.net/gh/eligrey/FileSaver.js/dist/FileSaver.min.js"></script>
 
-            // NOTE: SaveAsDialog is a browser setting. For example, in Google Chrome,
-            // in Settings/Advanced/Downloads section you have a setting:
-            // 'Ask where to save each file before downloading' - which you can set true/false.
-            // If you enable this setting it would always ask you and bring the SaveAsDialog
-            saveAs(blob, localFSname);
+</head>
+<body>
+
+    <div id="uiButtons">
+        <button onclick="document.getElementById('jsonFileInput').click();">Load JSON</button>
+        <button onclick="Module.ccall('SaveDataJSON');">Save JSON</button>
+    </div>
+
+    <input type="file" id="jsonFileInput" accept=".json" style="display:none" onchange="loadSelectedFile(this)">
+
+    <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" tabindex="-1"></canvas>
+
+    <script>
+        var Module = {
+            print: (function() {
+                var element = document.getElementById('output');
+                if (element) element.value = ''; // clear output
+                return function(text) {
+                    if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
+                    console.log(text);
+                    if (element) {
+                        element.value += text + "\n";
+                        element.scrollTop = element.scrollHeight;
+                    }
+                };
+            })(),
+            canvas: (function() {
+                return document.getElementById('canvas');
+            })()
+        };
+
+        function loadSelectedFile(input) {
+            if (input.files.length === 0) return;
+
+            var file = input.files[0];
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                var jsonStr = e.target.result;
+                console.log("Calling LoadDataJSON with JSON:", jsonStr);
+
+                    console.log("Running LoadDataJSON");
+                    Module.ccall('LoadDataJSON', null, ['string'], [jsonStr]);
+
+            };
+
+
+            reader.readAsText(file);
         }
     </script>
-    </head>
-    <body>
-        <canvas class=emscripten id=canvas oncontextmenu=event.preventDefault() tabindex=-1></canvas>
-        <p id="output" />
-        <script>
-            var Module = {
-                print: (function() {
-                    var element = document.getElementById('output');
-                    if (element) element.value = ''; // clear browser cache
-                    return function(text) {
-                        if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
-                        console.log(text);
-                        if (element) {
-                          element.value += text + "\n";
-                          element.scrollTop = element.scrollHeight; // focus on bottom
-                        }
-                    };
-                })(),
-                canvas: (function() {
-                    var canvas = document.getElementById('canvas');
-                    return canvas;
-                })()
-            };
-        </script>
-        {{{ SCRIPT }}}
-    </body>
+
+    {{{ SCRIPT }}}
+
+</body>
 </html>

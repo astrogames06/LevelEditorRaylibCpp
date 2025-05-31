@@ -22,6 +22,7 @@ void UpdateDrawFrame();
 int main(void)
 {
 	InitWindow(game.WIDTH, game.HEIGHT, game.TITLE.c_str());
+	std::cout << "STARTED GAME!!!!!!!!!!!!\n";
 	game.Init();
 
 	#if defined(PLATFORM_WEB)

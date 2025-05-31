@@ -6,6 +6,10 @@
 #include <raygui.h>
 #include <iostream>
 
+#ifdef PLATFORM_WEB
+    #include <emscripten/emscripten.h>
+#endif
+
 #include "../Data/Data.hpp"
 
 extern Game game;
@@ -38,6 +42,12 @@ void DrawUI()
         {
             game.mode = MOVE;
             mode_icon = 21;
+<<<<<<< HEAD
+=======
+            #ifdef PLATFORM_WEB
+    emscripten_run_script("document.getElementById('jsonFileInput').click();");
+#endif
+>>>>>>> 2e86e78 (ADDED IMPORT/EXPORTING OF .JSON FILES)
         }
 
         if (GuiButtonRounded({175, 10, 45, 45}, "#152#", 5.f, 5.f, game.UI_recs))

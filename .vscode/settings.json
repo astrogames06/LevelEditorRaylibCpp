@@ -88,5 +88,6 @@
         "valarray": "cpp",
         "xhash": "cpp",
         "xtree": "cpp"
-    }
+    },
+    "liveServer.settings.port": 5501
 }

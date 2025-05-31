@@ -1,20 +1,31 @@
 #include "Data.hpp"
 
 #include <fstream>
+#include <sstream>
+#include <iostream>
+#include <string>
 
 #include "../Game/Game.hpp"
-
 #include "../Shroom/Shroom.hpp"
 #include "../Enemy/Enemy.hpp"
 #include "../Block/Block.hpp"
+
+#ifdef PLATFORM_WEB
+#include <emscripten/emscripten.h>
+#endif
 
 extern Game game;
 
 json j = json::array();
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 void SaveDataJSON()
 {
-    for (std::unique_ptr<Entity>& entity : game.entities)
+    j.clear();
+    for (const std::unique_ptr<Entity>& entity : game.entities)
     {
         j.push_back({
             {"type", entity->type},
@@ -27,17 +38,57 @@ void SaveDataJSON()
     if (file.is_open()) {
         file << j.dump(4);
     }
+
+    std::string jsonStr = j.dump(4);
+
+#ifdef PLATFORM_WEB
+    std::string escapedJsonStr;
+    for (char c : jsonStr)
+    {
+        switch (c)
+        {
+            case '"':  escapedJsonStr += "\\\""; break;
+            case '\\': escapedJsonStr += "\\\\"; break;
+            case '\n': escapedJsonStr += "\\n";  break;
+            case '\r': escapedJsonStr += "\\r";  break;
+            case '\t': escapedJsonStr += "\\t";  break;
+            default:
+                if (static_cast<unsigned char>(c) < 0x20)
+                {
+                    char buffer[7];
+                    snprintf(buffer, sizeof(buffer), "\\u%04x", c);
+                    escapedJsonStr += buffer;
+                }
+                else
+                {
+                    escapedJsonStr += c;
+                }
+        }
+    }
+
+    std::string jsCode =
+        "var blob = new Blob([\"" + escapedJsonStr + "\"], {type: 'application/json'});"
+        "var url = URL.createObjectURL(blob);"
+        "var a = document.createElement('a');"
+        "a.href = url;"
+        "a.download = 'data.json';"
+        "a.click();"
+        "URL.revokeObjectURL(url);";
+
+    emscripten_run_script(jsCode.c_str());
+#endif
 }
 
-void LoadDataJSON()
+
+void LoadDataJSON(const char* json_str)
 {
-    std::ifstream file("data.json");
-    if (!file.is_open()) return;
+    std::cout << "C++ received JSON string:\n" << json_str << std::endl;
+    // std::ifstream file("data.json");
+    // if (!file.is_open()) return;
 
-    json j_loaded;
-    file >> j_loaded;
+    json j_loaded = json::parse(json_str);
 
-    // Clears entites to re-add them but only removes ones that arent player
+    // Keep player, remove others
     Player* player = game.GetEntityOfType<Player>();
     game.entities.erase(
         std::remove_if(game.entities.begin(), game.entities.end(),
@@ -49,7 +100,6 @@ void LoadDataJSON()
 
     for (json::reference item : j_loaded)
     {
-        // Gets entity info
         int type_enum = item.at("type").get<int>();
         int x = item.at("x").get<int>();
         int y = item.at("y").get<int>();
@@ -57,10 +107,10 @@ void LoadDataJSON()
         switch(type_enum)
         {
             case ENTITY_TYPE::PLAYER_TYPE:
-                game.GetEntityOfType<Player>()->origin_pos = {(float)x, (float)y};
-                game.GetEntityOfType<Player>()->x = x;
-                game.GetEntityOfType<Player>()->y = y;
-                game.GetEntityOfType<Player>()->Init();
+                player->origin_pos = {(float)x, (float)y};
+                player->x = x;
+                player->y = y;
+                player->Init();
                 break;
             case ENTITY_TYPE::BLOCK_TYPE:
                 game.entities.push_back(std::make_unique<Block>(x, y));
@@ -76,3 +126,7 @@ void LoadDataJSON()
         }
     }
 }
+
+#ifdef __cplusplus
+} // extern "C"
+#endif
