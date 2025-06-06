@@ -40,7 +40,7 @@ void Game::Init()
 
 void Game::Update()
 {
-    if (!running)
+    if (scene == SCENE::EDITOR)
     {
         RunMouseControl();
         RunCameraControl();
@@ -48,14 +48,14 @@ void Game::Update()
         // VERY IMPORTANT FOR PLACING ENTITIES SYSTEMS
         RunWorldEditorSystem();
     }
-    else if (running)
+    else if (scene == SCENE::GAME)
     {
         for (std::unique_ptr<Entity>& entity : entities)
         {
             if (entity && entity->alive) entity->Update();
         }
     }
-    // Remove it if Entity->alive = false;
+    // Remove it if Entity->remove = true;
     game.entities.erase(
         std::remove_if(
             game.entities.begin(),
@@ -81,7 +81,7 @@ void Game::Draw()
         if (entity && entity->alive) entity->Draw();
     }
 
-    if (!running)
+    if (scene == SCENE::EDITOR)
     {
         for (Rectangle& cell : cells)
         {
@@ -93,7 +93,7 @@ void Game::Draw()
     EndMode2D();
     DrawUI();
 
-    if (!running)
+    if (scene == SCENE::EDITOR)
         GuiDrawIcon(mode_icon, GetMouseX()-5, GetMouseY()-10, 1, DARKGRAY);
 
     EndDrawing();
@@ -101,7 +101,7 @@ void Game::Draw()
 
 void Game::Reset()
 {
-    running = false;
+    scene = SCENE::EDITOR;
 
     for (std::unique_ptr<Entity>& entity : entities)
     {

@@ -18,11 +18,11 @@ int mode_icon = 23;
 int GuiButtonRounded(Rectangle bounds, const char *text, float roundness, int segments, std::vector<Rectangle>& v);
 void DrawUI()
 {
-    if (!game.running)
+    if (game.scene == SCENE::EDITOR)
     {
         if (GuiButtonRounded({(float)game.WIDTH-110, 10, 100, 45}, "PLAY!", 5.f, 20.f, game.UI_recs))
         {
-            game.running = true;
+            game.scene = SCENE::GAME;
             return;
         }
 
@@ -68,7 +68,7 @@ void DrawUI()
         }
     }
 
-    if (game.running)
+    if (game.scene == SCENE::GAME)
     {
         if (GuiButtonRounded({(float)game.WIDTH-110, 10, 100, 45}, "STOP!", 5.f, 20.f, game.UI_recs))
         {

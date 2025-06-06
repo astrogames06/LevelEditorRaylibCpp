@@ -18,13 +18,20 @@ enum EDIT_MODE
     SHROOM
 };
 
+enum SCENE
+{
+    EDITOR,
+    GAME,
+    DEAD
+};
+
 class Game
 {
 public:
     const int WIDTH = 875;
     const int HEIGHT = 455;
     const std::string TITLE = "Level Builder!";
-    bool running = false;
+    SCENE scene = SCENE::EDITOR;
 
     Camera2D camera;
     std::vector<Rectangle> UI_recs;
