@@ -27,7 +27,7 @@ public:
     virtual void Draw() {}
     virtual void Reset() { alive = true; }
     // To kill entity in game
-    void Kill() { alive = false; }
+    virtual void Kill() { alive = false; }
 
     // To delete entity from game.entities
     void Delete() { remove = true; }

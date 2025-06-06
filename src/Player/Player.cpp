@@ -98,3 +98,8 @@ void Player::Reset()
     y = origin_pos.y;
     velocity = {0, 0};
 }
+
+void Player::Kill()
+{
+    game.scene = SCENE::DEAD;
+}

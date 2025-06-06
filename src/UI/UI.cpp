@@ -66,15 +66,21 @@ void DrawUI()
         {
             SaveDataJSON();
         }
+        GuiDrawIcon(mode_icon, GetMouseX()-5, GetMouseY()-10, 1, DARKGRAY);
     }
 
-    if (game.scene == SCENE::GAME)
+    else if (game.scene == SCENE::GAME)
     {
         if (GuiButtonRounded({(float)game.WIDTH-110, 10, 100, 45}, "STOP!", 5.f, 20.f, game.UI_recs))
         {
             game.Reset();
             return;
         }
+    }
+    else if (game.scene == SCENE::DEAD)
+    {
+        DrawText("YOU HAVE DIED!", game.WIDTH/2-MeasureText("YOU HAVE DIED!", 40)/2, 150, 40, BLACK);
+        if (GuiButton({(float)game.WIDTH/2-100/2, 250, 150, 95}, "GO BACK TO EDITOR!")) game.Reset();
     }
     DrawFPS(20, game.HEIGHT-20);
 }

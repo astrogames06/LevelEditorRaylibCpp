@@ -9,6 +9,7 @@
 #include "../Systems/WorldEditor.hpp"
 #include "../Enemy/Enemy.hpp"
 #include "../Systems/MainSystems.hpp"
+#include "Scenes.hpp"
 
 void Game::Init()
 {
@@ -42,18 +43,11 @@ void Game::Update()
 {
     if (scene == SCENE::EDITOR)
     {
-        RunMouseControl();
-        RunCameraControl();
-
-        // VERY IMPORTANT FOR PLACING ENTITIES SYSTEMS
-        RunWorldEditorSystem();
+        UpdateEditorScene();
     }
     else if (scene == SCENE::GAME)
     {
-        for (std::unique_ptr<Entity>& entity : entities)
-        {
-            if (entity && entity->alive) entity->Update();
-        }
+        UpdateGameScene();
     }
     // Remove it if Entity->remove = true;
     game.entities.erase(
@@ -76,25 +70,21 @@ void Game::Draw()
     ClearBackground(WHITE);
     BeginMode2D(camera);
 
-    for (std::unique_ptr<Entity>& entity : entities)
+    if (scene == SCENE::EDITOR || scene == SCENE::GAME)
     {
-        if (entity && entity->alive) entity->Draw();
+        for (std::unique_ptr<Entity>& entity : entities)
+        {
+            if (entity && entity->alive) entity->Draw();
+        }
     }
 
     if (scene == SCENE::EDITOR)
     {
-        for (Rectangle& cell : cells)
-        {
-            DrawRectangleLinesEx(cell, 1.f, GRAY);
-        }
-
-        DrawRectangleV(world_mouse_pos, {CELL_SIZE, CELL_SIZE}, Color{0, 0, 0, 50});
+        DrawEditorScene();
     }
+
     EndMode2D();
     DrawUI();
-
-    if (scene == SCENE::EDITOR)
-        GuiDrawIcon(mode_icon, GetMouseX()-5, GetMouseY()-10, 1, DARKGRAY);
 
     EndDrawing();
 }

@@ -23,8 +23,8 @@ void Enemy::Init()
 
 void Enemy::Update()
 {
-    // Check if player lands on top of enemy
     Player* player = game.GetEntityOfType<Player>();
+    // Check if player lands on top of enemy
     if (!player->isOnGround &&
         player->x + game.CELL_SIZE > x &&
         player->velocity.y > 0 &&
@@ -33,6 +33,13 @@ void Enemy::Update()
         }, {(float)x, (float)y, game.CELL_SIZE, game.CELL_SIZE}))
     {
         this->Kill();
+    }
+    // Check if player gets hit on side of enemy
+    else if (player->isOnGround && CheckCollisionRecs({
+            (float)player->x, (float)player->y, game.CELL_SIZE, game.CELL_SIZE
+        }, {(float)x, (float)y, game.CELL_SIZE, game.CELL_SIZE}))
+    {
+        player->Kill();
     }
 
     // Enemy collision and movement ! AI GENERATED !
