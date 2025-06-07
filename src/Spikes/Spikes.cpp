@@ -13,14 +13,15 @@ void Spikes::Init()
 
 void Spikes::Update()
 {
-    Player* player = game.GetEntityOfType<Player>();
-
-    if (CheckCollisionRecs(
-        {(float)player->x, (float)player->y, game.CELL_SIZE, game.CELL_SIZE},
-        spikes_hit_box
-    ))
+    for (std::unique_ptr<Entity>& entity : game.entities)
     {
-        player->Kill();
+        if (CheckCollisionRecs(
+            {(float)entity->x, (float)entity->y, game.CELL_SIZE, game.CELL_SIZE},
+            spikes_hit_box
+        ))
+        {
+            entity->Kill();
+        }
     }
 }
 

@@ -102,5 +102,5 @@ void Player::Reset()
 
 void Player::Kill()
 {
-    game.scene = SCENE::DEAD;
+    for (std::unique_ptr<Entity>& entity : game.entities) entity->Reset();
 }
