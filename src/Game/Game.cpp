@@ -30,9 +30,9 @@ void Game::Init()
         entities.push_back(std::make_unique<Block>(x * CELL_SIZE, HEIGHT - CELL_SIZE));
     }
 
-    for (int x = 0; x < WIDTH/CELL_SIZE; x++)
+    for (int x = camera.target.x; x < WIDTH/CELL_SIZE; x++)
     {
-        for (int y = 0; y < HEIGHT/CELL_SIZE; y++)
+        for (int y = camera.target.y; y < HEIGHT/CELL_SIZE; y++)
         {
             cells.push_back(Rectangle{x*CELL_SIZE, y*CELL_SIZE, CELL_SIZE, CELL_SIZE});
         }
@@ -99,16 +99,19 @@ void Game::Reset()
         entity->Reset();
     }
 
+    camera = { 0 };
+    camera.rotation = 0.0f;
+    camera.zoom = 1.0f;
+    // Puts player in view of camera
+    camera.target.x = GetEntityOfType<Player>()->x - (CELL_SIZE*5);
+    camera.target.y = GetEntityOfType<Player>()->y - (CELL_SIZE*5);
+
     cells.clear();
     for (int x = 0; x < WIDTH/CELL_SIZE; x++)
     {
         for (int y = 0; y < HEIGHT/CELL_SIZE; y++)
         {
-            cells.push_back({x*CELL_SIZE, y*CELL_SIZE, CELL_SIZE, CELL_SIZE});
+            cells.push_back({camera.target.x + x*CELL_SIZE, camera.target.y + y*CELL_SIZE, CELL_SIZE, CELL_SIZE});
         }
     }
-
-    camera = { 0 };
-    camera.rotation = 0.0f;
-    camera.zoom = 1.0f;
 }

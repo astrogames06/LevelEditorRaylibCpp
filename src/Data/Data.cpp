@@ -137,6 +137,9 @@ void LoadDataJSON(const char* json_str)
                 break;
         }
     }
+
+    // Resets and cleans entities
+    game.Reset();
 }
 
 #ifdef __cplusplus
