@@ -1,6 +1,7 @@
 #include "Player.hpp"
 
 #include <iostream>
+#include <cmath>
 
 #include "../Game/Game.hpp"
 #include "../Block/Block.hpp"

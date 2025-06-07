@@ -13,7 +13,6 @@ Texture2D right_texture;
 void Enemy::Init()
 {
     texture = LoadTexture("assets/enemy.png");
-    SetTextureFilter(texture, TEXTURE_FILTER_POINT);
 
     left_texture = texture;
 

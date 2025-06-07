@@ -9,6 +9,7 @@
 #include "../Shroom/Shroom.hpp"
 #include "../Enemy/Enemy.hpp"
 #include "../Block/Block.hpp"
+#include "../Spikes/Spikes.hpp"
 
 #ifdef PLATFORM_WEB
 #include <emscripten/emscripten.h>
@@ -128,6 +129,9 @@ void LoadDataJSON(const char* json_str)
                 break;
             case ENTITY_TYPE::SHROOM_TYPE:
                 game.entities.push_back(std::make_unique<Shroom>(x, y));
+                break;
+            case ENTITY_TYPE::SPIKE_TYPE:
+                game.entities.push_back(std::make_unique<Spikes>(x, y));
                 break;
             default:
                 break;
