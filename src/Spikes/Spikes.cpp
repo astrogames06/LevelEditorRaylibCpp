@@ -13,6 +13,7 @@ void Spikes::Init()
 
 void Spikes::Update()
 {
+    spikes_hit_box = {(float)x, (float)(y + texture.height - 15), (float)texture.width, 15};
     for (std::unique_ptr<Entity>& entity : game.entities)
     {
         if (CheckCollisionRecs(
