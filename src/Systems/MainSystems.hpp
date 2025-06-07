@@ -16,6 +16,13 @@ void RunMouseControl()
     }
 }
 
+void RunCameraFollowSystem()
+{
+    Player* player = game.GetEntityOfType<Player>();
+    game.camera.target = {(float)round(player->x), (float)round(player->y)};
+    game.camera.offset = {(float)round(game.WIDTH / 2.0f), (float)round(game.HEIGHT / 2.0f)};
+}
+
 void RunCameraControl()
 {
     if ((IsKeyPressed(KEY_W) || IsKeyDown(KEY_UP)))

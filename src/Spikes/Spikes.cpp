@@ -18,7 +18,7 @@ void Spikes::Update()
         if (CheckCollisionRecs(
             {(float)entity->x, (float)entity->y, game.CELL_SIZE, game.CELL_SIZE},
             spikes_hit_box
-        ))
+        ) && dynamic_cast<Spikes*>(entity.get()) == nullptr)
         {
             entity->Kill();
         }

@@ -38,7 +38,7 @@ void Game::Init()
         }
     }
 }
-
+    
 void Game::Update()
 {
     if (scene == SCENE::EDITOR)
@@ -47,6 +47,7 @@ void Game::Update()
     }
     else if (scene == SCENE::GAME)
     {
+        RunCameraFollowSystem();
         UpdateGameScene();
     }
     // Remove it if Entity->remove = true;
