@@ -15,7 +15,8 @@ enum EDIT_MODE
     ERASE,
     MOVE,
     ENEMY,
-    SHROOM
+    SHROOM,
+    SPIKES
 };
 
 enum SCENE

@@ -14,8 +14,6 @@ public:
     bool isOnGround;
     bool direction;
 
-    Vector2 origin_pos;
-
     Enemy(float x, float y) {
         type = ENTITY_TYPE::ENEMY_TYPE;
         this->x = x;

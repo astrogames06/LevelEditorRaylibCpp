@@ -10,6 +10,7 @@ extern Game game;
 void Shroom::Init()
 {
     texture = LoadTexture("assets/mushroom.png");
+    SetTextureFilter(texture, TEXTURE_FILTER_POINT);
 }
 
 void Shroom::Update()

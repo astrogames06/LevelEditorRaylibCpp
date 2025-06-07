@@ -16,8 +16,8 @@ void Player::Init()
 
 void Player::Update()
 {
-    game.camera.target = {(float)x, (float)y};
-    game.camera.offset = { game.WIDTH / 2.0f, game.HEIGHT / 2.0f };
+    game.camera.target = {(float)round(x), (float)round(y)};
+    game.camera.offset = {(float)round(game.WIDTH / 2.0f), (float)round(game.HEIGHT / 2.0f)};
     // Moving player in MOVE mode
     if (game.mode == MOVE)
     {

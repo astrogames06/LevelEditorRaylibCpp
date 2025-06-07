@@ -8,7 +8,8 @@ enum ENTITY_TYPE
     PLAYER_TYPE,
     BLOCK_TYPE,
     ENEMY_TYPE,
-    SHROOM_TYPE
+    SHROOM_TYPE,
+    SPIKE_TYPE
 };
 
 class Entity
@@ -17,6 +18,7 @@ public:
     ENTITY_TYPE type;
     int x;
     int y;
+    Vector2 origin_pos;
     Texture2D texture;
     bool remove = false;
     bool alive = true;

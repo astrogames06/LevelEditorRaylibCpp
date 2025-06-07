@@ -8,6 +8,7 @@
 #include "../Enemy/Enemy.hpp"
 #include "../Utils/Utils.hpp"
 #include "../Shroom/Shroom.hpp"
+#include "../Spikes/Spikes.hpp"
 
 extern Game game;
 
@@ -99,6 +100,14 @@ void MushroomSystem()
     }
 }
 
+void SpikesSystem()
+{
+    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && !IsOverUI() && !IsOverEntity())
+    {
+        game.entities.push_back(std::make_unique<Spikes>(game.world_mouse_pos.x, game.world_mouse_pos.y));
+    }
+}
+
 void RunWorldEditorSystem()
 {
     switch (game.mode)
@@ -117,6 +126,9 @@ void RunWorldEditorSystem()
         break;
     case SHROOM:
         MushroomSystem();
+        break;
+    case SPIKES:
+        SpikesSystem();
         break;
     default:
         break;

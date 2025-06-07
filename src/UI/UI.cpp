@@ -56,6 +56,12 @@ void DrawUI()
             mode_icon = 220;
         }
 
+        if (GuiButtonRounded({285, 10, 45, 45}, "#221#", 5.f, 5.f, game.UI_recs))
+        {
+            game.mode = SPIKES;
+            mode_icon = 221;
+        }
+
         if (GuiButtonRounded({(float)10, (float)game.HEIGHT-55, 100, 45}, "LOAD GAME!", 5.f, 20.f, game.UI_recs))
         {
             #ifdef PLATFORM_WEB
