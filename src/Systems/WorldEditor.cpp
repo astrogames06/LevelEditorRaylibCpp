@@ -14,8 +14,9 @@ extern Game game;
 
 void BlockSystem()
 {
-    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && !IsOverUI())
+    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && !IsOverUI() && dynamic_cast<Player*>(GetEntityOver()) == nullptr)
     {
+        // Makes sure the entity your trying to erase actually exists
         if (GetEntityOver() != nullptr)
             GetEntityOver()->Delete();
         game.entities.push_back(std::make_unique<Block>(game.world_mouse_pos.x, game.world_mouse_pos.y));
@@ -23,11 +24,10 @@ void BlockSystem()
 }
 void EraseSystem()
 {
-    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && !IsOverUI())
+    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && !IsOverUI() && dynamic_cast<Player*>(GetEntityOver()) == nullptr)
     {
-        // Makes sure that you arent trying to erase the player
-        // Also makes sure the entity your trying to erase actually exists
-        if (dynamic_cast<Player*>(GetEntityOver()) == nullptr && GetEntityOver() != nullptr)
+        // Makes sure the entity your trying to erase actually exists
+        if (GetEntityOver() != nullptr)
             GetEntityOver()->Delete();
     }
 }
@@ -81,8 +81,9 @@ void MoveSystem()
 
 void EnemySystem()
 {
-    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && !IsOverUI())
+    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && !IsOverUI() && dynamic_cast<Player*>(GetEntityOver()) == nullptr)
     {
+        // Makes sure the entity your trying to erase actually exists
         if (GetEntityOver() != nullptr)
             GetEntityOver()->Delete();
         game.entities.push_back(std::make_unique<Enemy>(game.world_mouse_pos.x, game.world_mouse_pos.y));
@@ -91,8 +92,9 @@ void EnemySystem()
 
 void MushroomSystem()
 {
-    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && !IsOverUI())
+    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && !IsOverUI() && dynamic_cast<Player*>(GetEntityOver()) == nullptr)
     {
+        // Makes sure the entity your trying to erase actually exists
         if (GetEntityOver() != nullptr)
             GetEntityOver()->Delete();
         game.entities.push_back(std::make_unique<Shroom>(game.world_mouse_pos.x, game.world_mouse_pos.y));
@@ -101,7 +103,8 @@ void MushroomSystem()
 
 void SpikesSystem()
 {
-    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && !IsOverUI())
+    // Makes sure the entity your trying to erase actually exists
+    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && !IsOverUI() && dynamic_cast<Player*>(GetEntityOver()) == nullptr)
     {
         if (GetEntityOver() != nullptr)
             GetEntityOver()->Delete();
