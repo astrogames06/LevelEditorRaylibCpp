@@ -20,6 +20,18 @@ bool IsOverEntity()
     return false;
 }
 
+Entity* GetEntityOver()
+{
+    for (std::unique_ptr<Entity>& entity : game.entities)
+    {
+        if (CheckCollisionPointRec(game.world_mouse_pos, {
+            (float)entity->x, (float)entity->y, game.CELL_SIZE, game.CELL_SIZE
+        }))
+            return entity.get();
+    }
+    return nullptr;
+}
+
 bool IsOverEntityDragging(Entity* dragging)
 {
     Rectangle dragRect = {

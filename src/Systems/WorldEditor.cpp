@@ -14,8 +14,10 @@ extern Game game;
 
 void BlockSystem()
 {
-    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && !IsOverUI() && !IsOverEntity())
+    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && !IsOverUI())
     {
+        if (GetEntityOver() != nullptr)
+            GetEntityOver()->Delete();
         game.entities.push_back(std::make_unique<Block>(game.world_mouse_pos.x, game.world_mouse_pos.y));
     }
 }
@@ -23,17 +25,10 @@ void EraseSystem()
 {
     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && !IsOverUI())
     {
-        for (std::unique_ptr<Entity>& entity : game.entities)
-        {
-            if (CheckCollisionPointRec(game.world_mouse_pos, {
-                (float)entity->x, (float)entity->y, game.CELL_SIZE, game.CELL_SIZE
-            }))
-            {
-                // Makes sure that you arent trying to erase the player
-                if (dynamic_cast<Player*>(entity.get()) == nullptr)
-                    entity->Delete();
-            }
-        }
+        // Makes sure that you arent trying to erase the player
+        // Also makes sure the entity your trying to erase actually exists
+        if (dynamic_cast<Player*>(GetEntityOver()) == nullptr && GetEntityOver() != nullptr)
+            GetEntityOver()->Delete();
     }
 }
 void MoveSystem()
@@ -86,24 +81,30 @@ void MoveSystem()
 
 void EnemySystem()
 {
-    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && !IsOverUI() && !IsOverEntity())
+    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && !IsOverUI())
     {
+        if (GetEntityOver() != nullptr)
+            GetEntityOver()->Delete();
         game.entities.push_back(std::make_unique<Enemy>(game.world_mouse_pos.x, game.world_mouse_pos.y));
     }
 }
 
 void MushroomSystem()
 {
-    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && !IsOverUI() && !IsOverEntity())
+    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && !IsOverUI())
     {
+        if (GetEntityOver() != nullptr)
+            GetEntityOver()->Delete();
         game.entities.push_back(std::make_unique<Shroom>(game.world_mouse_pos.x, game.world_mouse_pos.y));
     }
 }
 
 void SpikesSystem()
 {
-    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && !IsOverUI() && !IsOverEntity())
+    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && !IsOverUI())
     {
+        if (GetEntityOver() != nullptr)
+            GetEntityOver()->Delete();
         game.entities.push_back(std::make_unique<Spikes>(game.world_mouse_pos.x, game.world_mouse_pos.y));
     }
 }
