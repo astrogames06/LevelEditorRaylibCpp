@@ -61,7 +61,7 @@ void DrawUI()
             game.mode = SPIKES;
             mode_icon = 221;
         }
-        DrawText(std::to_string(game.entities.size()).c_str(), 20, 20, 20, BLACK);
+        // DrawText(std::to_string(game.entities.size()).c_str(), 20, 20, 20, BLACK);
         if (GuiButtonRounded({(float)10, (float)game.HEIGHT-55, 100, 45}, "LOAD GAME!", 5.f, 20.f, game.UI_recs))
         {
             #ifdef PLATFORM_WEB
