@@ -63,16 +63,16 @@ void DrawUI()
         }
 
         // DrawText(std::to_string(game.entities.size()).c_str(), 20, 20, 20, BLACK);
-        if (GuiButtonRounded({(float)10, (float)game.HEIGHT-55, 100, 45}, "LOAD GAME!", 5.f, 20.f, game.UI_recs))
-        {
-            #ifdef PLATFORM_WEB
+        #ifdef PLATFORM_WEB
+            if (GuiButtonRounded({(float)10, (float)game.HEIGHT-55, 100, 45}, "LOAD GAME!", 5.f, 20.f, game.UI_recs))
+            {
                 emscripten_run_script("document.getElementById('jsonFileInput').click();");
-            #endif
-        }
-        if (GuiButtonRounded({(float)game.WIDTH-110, (float)game.HEIGHT-55, 100, 45}, "SAVE GAME!", 5.f, 20.f, game.UI_recs))
-        {
-            SaveDataJSON();
-        }
+            }
+            if (GuiButtonRounded({(float)game.WIDTH-110, (float)game.HEIGHT-55, 100, 45}, "SAVE GAME!", 5.f, 20.f, game.UI_recs))
+            {
+                SaveDataJSON();
+            }
+        #endif
         GuiDrawIcon(mode_icon, GetMouseX()-5, GetMouseY()-10, 1, DARKGRAY);
     }
 
