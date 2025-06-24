@@ -7,4 +7,4 @@ To compile for mac:
 ```sh build.sh```
 
 To compile for web:
-```wbuild``` or ```sh wbuild.bat```
+```wbuild``` or ```sh wbuild.sh```
