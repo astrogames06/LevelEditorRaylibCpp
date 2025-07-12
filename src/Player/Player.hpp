@@ -9,6 +9,8 @@ public:
     Vector2 velocity = {0, 0};
     bool isOnGround;
 
+    int coins = 0;
+
     void Init() override;
     void Update() override;
     void Draw() override;

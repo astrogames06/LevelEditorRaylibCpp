@@ -9,6 +9,7 @@
 #include "../Utils/Utils.hpp"
 #include "../Shroom/Shroom.hpp"
 #include "../Spikes/Spikes.hpp"
+#include "../Coin/Coin.hpp"
 
 extern Game game;
 
@@ -112,6 +113,17 @@ void SpikesSystem()
     }
 }
 
+void CoinSystem()
+{
+    // Makes sure the entity your trying to erase actually exists
+    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && !IsOverUI() && dynamic_cast<Player*>(GetEntityOver()) == nullptr)
+    {
+        if (GetEntityOver() != nullptr)
+            GetEntityOver()->Delete();
+        game.entities.push_back(std::make_unique<Coin>(game.world_mouse_pos.x, game.world_mouse_pos.y));
+    }
+}
+
 void RunWorldEditorSystem()
 {
     switch (game.mode)
@@ -133,6 +145,9 @@ void RunWorldEditorSystem()
         break;
     case SPIKES:
         SpikesSystem();
+        break;
+    case COIN:
+        CoinSystem();
         break;
     default:
         break;

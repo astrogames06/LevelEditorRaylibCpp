@@ -9,7 +9,8 @@ enum ENTITY_TYPE
     BLOCK_TYPE,
     ENEMY_TYPE,
     SHROOM_TYPE,
-    SPIKE_TYPE
+    SPIKE_TYPE,
+    COIN_TYPE
 };
 
 class Entity

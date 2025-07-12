@@ -56,6 +56,12 @@ void DrawUI()
             mode_icon = 221;
         }
 
+        if (GuiButtonRounded({340, 10, 45, 45}, "#146#", 5.f, 5.f, game.UI_recs))
+        {
+            game.mode = COIN;
+            mode_icon = 146;
+        }
+
         if (GuiButtonRounded({(float)game.WIDTH-55, 10, 45, 45}, "#131#", 5.f, 20.f, game.UI_recs))
         {
             game.scene = SCENE::GAME;
@@ -78,6 +84,9 @@ void DrawUI()
 
     else if (game.scene == SCENE::GAME)
     {
+        std::string coin_str = "Coins: " + std::to_string(game.GetEntityOfType<Player>()->coins);
+        DrawText(coin_str.c_str(), 20, 20, 20, BLACK);
+
         if (GuiButtonRounded({(float)game.WIDTH-55, 10, 45, 45}, "#132#", 5.f, 20.f, game.UI_recs))
         {
             game.Reset();
