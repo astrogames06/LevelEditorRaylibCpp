@@ -96,6 +96,7 @@ void Player::Reset()
     x = origin_pos.x;
     y = origin_pos.y;
     velocity = {0, 0};
+    coins = 0;
 }
 
 void Player::Kill()
