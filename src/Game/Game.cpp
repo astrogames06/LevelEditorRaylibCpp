@@ -50,6 +50,7 @@ void Game::Update()
         RunCameraFollowSystem();
         UpdateGameScene();
     }
+    
     // Remove it if Entity->remove = true;
     game.entities.erase(
         std::remove_if(
