@@ -8,3 +8,5 @@ To compile for mac:
 
 To compile for web:
 ```wbuild``` or ```sh wbuild.sh```
+
+<img src="logo.png">
