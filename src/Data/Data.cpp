@@ -13,16 +13,13 @@
 #include "../Coin/Coin.hpp"
 
 #ifdef PLATFORM_WEB
-#include <emscripten/emscripten.h>
+    #include <emscripten/emscripten.h>
 #endif
 
 extern Game game;
 
 json j = json::array();
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 void SaveDataJSON()
 {
@@ -82,13 +79,13 @@ void SaveDataJSON()
 }
 
 
-void LoadDataJSON(const char* json_str)
+void LoadDataJSON(std::string json_str)
 {
     std::cout << "C++ received JSON string:\n" << json_str << std::endl;
     // std::ifstream file("data.json");
     // if (!file.is_open()) return;
 
-    if (!json_str) {
+    if (json_str.empty()) {
         std::cerr << "json_str is null!" << std::endl;
         #ifdef PLATFORM_WEB
                 emscripten_run_script("alert('JSON FILES IS INVALID OR CORRUPTED!')");
@@ -146,6 +143,12 @@ void LoadDataJSON(const char* json_str)
     game.Reset();
 }
 
-#ifdef __cplusplus
-} // extern "C"
+// Defines the functions for  javascript
+#ifdef PLATFORM_WEB
+#include <emscripten/bind.h>
+
+EMSCRIPTEN_BINDINGS(my_module) {
+    emscripten::function("SaveDataJSON", &SaveDataJSON);
+    emscripten::function("LoadDataJSON", &LoadDataJSON);
+};
 #endif

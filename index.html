@@ -1,1 +1,109 @@
-<!doctypehtml><html lang=en-us><head><meta charset=utf-8><meta content="text/html; charset=utf-8"http-equiv=Content-Type><title>raylib web game</title><meta content="raylib web game"name=title><meta content="New raylib web videogame, developed using raylib videogames library"name=description><meta content="raylib, games, html5, programming, C, C++, library, learn, videogames"name=keywords><meta content="width=device-width"name=viewport><meta content="raylib web game"property=og:title><meta content=image/png property=og:image:type><meta content=https://www.raylib.com/common/img/raylib_logo.png property=og:image><meta content=raylib.com property=og:site_name><meta content=https://www.raylib.com/games.html property=og:url><meta content="New raylib web videogame, developed using raylib videogames library"property=og:description><meta content=summary name=twitter:card><meta content=@raysan5 name=twitter:site><meta content="raylib web game"name=twitter:title><meta content=https://www.raylib.com/common/raylib_logo.png name=twitter:image><meta content=https://www.raylib.com/games.html name=twitter:url><meta content="New raylib web game, developed using raylib videogames library"name=twitter:description><link href=https://www.raylib.com/favicon.ico rel="shortcut icon"><style>body{margin:0;background:#000;color:#fff;font-family:sans-serif}canvas.emscripten{border:none;background-color:#000;display:block;margin:0 auto}#uiButtons{position:fixed;top:10px;left:10px;z-index:1000}button{margin:5px;padding:8px 12px;font-size:14px}</style><script src=https://cdn.jsdelivr.net/gh/eligrey/FileSaver.js/dist/FileSaver.min.js></script></head><body><canvas class=emscripten id=canvas oncontextmenu=event.preventDefault() style=border:none!important;outline:0!important tabindex=-1></canvas><h1 style=text-align:center>Make sure to save your game!<br>Made by Jesse Sher</h1><input accept=.json id=jsonFileInput onchange=loadSelectedFile(this) style=display:none type=file><script>var Module={print:function(){var e=document.getElementById("output");return e&&(e.value=""),function(l){arguments.length>1&&(l=Array.prototype.slice.call(arguments).join(" ")),console.log(l),e&&(e.value+=l+"\n",e.scrollTop=e.scrollHeight)}}(),canvas:document.getElementById("canvas"),onRuntimeInitialized:function(){console.log("WASM initialized. Ready to load files."),window.wasmReady=!0}};function loadSelectedFile(e){if(0!==e.files.length){var l=e.files[0],n=new FileReader;n.onload=function(e){var l=e.target.result;console.log("Calling LoadDataJSON with JSON:",l),window.wasmReady?Module.ccall("LoadDataJSON",null,["string"],[l]):Module.onRuntimeInitialized=function(){console.log("Running LoadDataJSON after delayed init"),Module.ccall("LoadDataJSON",null,["string"],[l])}},n.readAsText(l)}}</script><script src=index.js async></script></body></html>
+<!doctype html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <title>raylib web game</title>
+
+    <meta name="title" content="raylib web game">
+    <meta name="description" content="New raylib web videogame, developed using raylib videogames library">
+    <meta name="keywords" content="raylib, games, html5, programming, C, C++, library, learn, videogames">
+    <meta name="viewport" content="width=device-width">
+
+    <!-- Open Graph metatags for sharing -->
+    <meta property="og:title" content="raylib web game">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image" content="https://www.raylib.com/common/img/raylib_logo.png">
+    <meta property="og:site_name" content="raylib.com">
+    <meta property="og:url" content="https://www.raylib.com/games.html">
+    <meta property="og:description" content="New raylib web videogame, developed using raylib videogames library">
+
+    <!-- Twitter metatags for sharing -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@raysan5">
+    <meta name="twitter:title" content="raylib web game">
+    <meta name="twitter:image" content="https://www.raylib.com/common/raylib_logo.png">
+    <meta name="twitter:url" content="https://www.raylib.com/games.html">
+    <meta name="twitter:description" content="New raylib web game, developed using raylib videogames library">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="https://www.raylib.com/favicon.ico">
+
+    <style>
+        body { margin: 0; background: #000; color: #fff; font-family: sans-serif; }
+        canvas.emscripten { border: none; background-color: black; display: block; margin: 0 auto; }
+        canvas { image-rendering: pixelated; image-rendering: crisp-edges; }
+        #uiButtons { position: fixed; top: 10px; left: 10px; z-index: 1000; }
+        button { margin: 5px; padding: 8px 12px; font-size: 14px; }
+    </style>
+
+    <!-- FileSaver.js for downloading files -->
+    <script src="https://cdn.jsdelivr.net/gh/eligrey/FileSaver.js/dist/FileSaver.min.js"></script>
+
+</head>
+<body>
+    <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" tabindex="-1" style="border: none !important; outline: none !important;"></canvas>
+
+    <h1 style="text-align: center;">
+        Make sure to save your game!<br>
+        Made by Jesse Sher
+    </h1>
+
+    <input type="file" id="jsonFileInput" accept=".json" style="display:none" onchange="loadSelectedFile(this)">
+
+    <script>
+        var Module = {
+            print: (function() {
+                var element = document.getElementById('output');
+                if (element) element.value = '';
+                return function(text) {
+                    if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
+                    console.log(text);
+                    if (element) {
+                        element.value += text + "\n";
+                        element.scrollTop = element.scrollHeight;
+                    }
+                };
+            })(),
+
+            canvas: (function() {
+                return document.getElementById('canvas');
+            })(),
+
+            onRuntimeInitialized: function () {
+                console.log("WASM initialized. Ready to load files.");
+                // Optional: flag to check if initialized
+                window.wasmReady = true;
+            }
+        };
+
+        function loadSelectedFile(input) {
+            if (input.files.length === 0) return;
+            var file = input.files[0];
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                var jsonStr = e.target.result;
+                console.log("Calling LoadDataJSON with JSON:", jsonStr);
+
+                // If WASM already ready, call immediately
+                if (window.wasmReady) {
+                    Module.LoadDataJSON(jsonStr);
+                } else {
+                    // Wait for it to initialize
+                    Module.onRuntimeInitialized = function () {
+                        console.log("Running LoadDataJSON after delayed init");
+                        Module.LoadDataJSON(jsonStr);
+                    };
+                }
+            };
+
+            reader.readAsText(file);
+        }
+    </script>
+
+    <script src="index.js"></script>
+
+</body>
+</html>
